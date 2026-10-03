@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>MuseDPI Desktop</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="renderer.js" defer></script>
+</head>
+<body>
+  <svg class="icon-definitions" aria-hidden="true"><defs>
+    <symbol id="icon-plug" viewBox="0 0 24 24"><path d="M9 3v4m6-4v4M6 7h12v3a6 6 0 0 1-6 6v5m-6-11a6 6 0 0 0 6 6"/></symbol>
+    <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="icon-network" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="5" rx="1"/><path d="M12 8v5M5 17v-4h14v4"/><rect x="2" y="17" width="6" height="4" rx="1"/><rect x="16" y="17" width="6" height="4" rx="1"/></symbol>
+    <symbol id="icon-game" viewBox="0 0 24 24"><path d="M7 7h10c3 0 5 10 3 11s-4-3-5-3H9c-1 0-3 4-5 3S4 7 7 7Z M8 9v5m-2.5-2.5h5m5.5-1.5h.01m2 3h.01"/></symbol>
+    <symbol id="icon-sliders" viewBox="0 0 24 24"><path d="M3 7h6m4 0h8M3 17h10m4 0h4"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></symbol>
+    <symbol id="icon-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .6-1.5 1-1.5 2m0 3h.01"/></symbol>
+  </defs></svg>
+  <header class="titlebar"><img src="mark.svg" alt="" width="28" height="28"><span class="brand">MuseDPI</span><span class="version">Desktop 0.1.0-alpha.1</span></header>
+  <div class="app-shell">
+    <nav class="sidebar" aria-label="Разделы">
+      <button data-page="connection" aria-current="page"><svg aria-hidden="true"><use href="#icon-plug"/></svg>Подключение</button>
+      <button data-page="services"><svg aria-hidden="true"><use href="#icon-grid"/></svg>Сервисы<span id="service-count" class="nav-count"></span></button>
+      <button data-page="ipsets"><svg aria-hidden="true"><use href="#icon-network"/></svg>IP-наборы</button>
+      <button data-page="games"><svg aria-hidden="true"><use href="#icon-game"/></svg>Игровой фильтр</button>
+      <button data-page="strategies"><svg aria-hidden="true"><use href="#icon-sliders"/></svg>Стратегии</button>
+      <div class="sidebar-bottom"><span id="sidebar-status"><span class="dot"></span>Отключён</span><button data-page="help"><svg aria-hidden="true"><use href="#icon-help"/></svg>Помощь</button></div>
+    </nav>
+    <div class="workspace">
+      <main>
+        <section data-panel="connection" aria-labelledby="heading-connection">
+          <h1 id="heading-connection">Подключение</h1>
+          <div class="connection-summary"><div><div class="status-label"><span id="dot" class="dot"></span><span id="status">Локальный прокси</span></div><h2 id="connection-title">Отключён</h2><p id="active-profile">SNI Multisplit</p></div><button id="connect" class="primary" disabled>Подключить</button></div>
+          <div class="section-title"><h3>Доступность сервисов</h3><button id="diagnose" class="text-button" disabled>Проверить</button></div>
+          <div id="results" aria-live="polite"></div><p id="checked" class="caption">Проверка HTTP через локальный прокси.</p>
+          <div class="address-row"><div><span class="caption">Адрес SOCKS5</span><div id="address">Появится после подключения</div></div><button id="copy" disabled>Копировать</button></div>
+          <p id="scope-summary" class="caption"></p>
+          <button class="text-button setup-link" data-page="help">Как подключить браузер или приложение</button>
+        </section>
+        <section data-panel="services" aria-labelledby="heading-services" hidden>
+          <h1 id="heading-services">Сервисы</h1><p class="intro">Выбери, для каких доменов применять обход. Остальной трафик проходит через прокси без изменений.</p>
+          <fieldset class="settings-fields"><legend class="sr-only">Выбор сервисов</legend><div id="service-options" class="option-list"></div>
+          <label class="field" for="custom-domains">Свои домены<textarea id="custom-domains" rows="3" placeholder="example.com"></textarea></label><p class="caption">По одному домену в строке. Поддомены включаются автоматически.</p>
+          <details><summary>Исключения доменов</summary><label class="field" for="excluded-domains">Передавать без обработки<textarea id="excluded-domains" rows="3" placeholder="example.org"></textarea></label><p class="caption">Исключения имеют приоритет над сервисами и игровыми правилами.</p></details></fieldset>
+        </section>
+        <section data-panel="ipsets" aria-labelledby="heading-ipsets" hidden>
+          <h1 id="heading-ipsets">IP-наборы</h1><p class="intro">Адреса и подсети для обхода. Поддерживаются IPv4, IPv6 и CIDR.</p>
+          <fieldset class="settings-fields"><legend class="sr-only">Настройки IP-наборов</legend>
+          <label class="field" for="ip-mode">Режим<select id="ip-mode"><option value="off">По доменам сервисов</option><option value="extend">Сервисы и IP-набор</option><option value="only">Только IP-набор</option></select></label><p id="ip-mode-help" class="caption"></p>
+          <div class="editor-heading"><label for="include-ips">Применять обход</label><button data-import="include-ips">Импорт .txt</button></div><textarea id="include-ips" rows="5" spellcheck="false" placeholder="203.0.113.0/24&#10;2001:db8::/32"></textarea><p id="include-count" class="caption">Список пуст</p>
+          <div class="editor-heading"><label for="exclude-ips">Исключения IP</label><button data-import="exclude-ips">Импорт .txt</button></div><textarea id="exclude-ips" rows="3" spellcheck="false" placeholder="192.168.0.0/16"></textarea><p class="caption">Исключения действуют во всех режимах, в том числе для игр. Файл до 512 КБ, до 5000 записей; комментарии начинаются с #.</p></fieldset>
+        </section>
+        <section data-panel="games" aria-labelledby="heading-games" hidden>
+          <h1 id="heading-games">Игровой фильтр</h1><p class="intro">Дополнительный обход по портам назначения, независимо от выбранных сервисов.</p>
+          <fieldset class="settings-fields"><legend class="sr-only">Игровые правила</legend><label class="option-row toggle-row"><span><strong>Обрабатывать игровые порты</strong><small>Только соединения, направленные через SOCKS5</small></span><input type="checkbox" id="game-enabled" role="switch"></label>
+          <label class="field" for="tcp-ports">Порты TCP<input id="tcp-ports" placeholder="27015-27050" autocomplete="off"></label><p class="caption">Первый TCP-запрос разбивается на части. До 56 портов суммарно для TCP и UDP: значения или диапазоны через запятую.</p>
+          <label class="field" for="udp-ports">Порты UDP <span class="experimental">Экспериментально</span><input id="udp-ports" placeholder="Например, 27015, 27020-27030" autocomplete="off"></label><p class="caption">UDP-фейки могут нарушить соединение. Оставь поле пустым, если нужен только TCP. Игра должна использовать SOCKS5 UDP.</p>
+          <div class="field-pair"><label class="field" for="udp-fakes">Количество UDP-фейков<input id="udp-fakes" type="number" min="1" max="6"></label><label class="field" for="game-ttl">TTL фейков<input id="game-ttl" type="number" min="1" max="32"></label></div>
+          <p class="caption">В режиме «Только IP-набор» фильтр ограничен адресами набора. UDP поддерживает один адрес назначения на SOCKS-ассоциацию. Запущенные игры автоматически не определяются.</p></fieldset>
+        </section>
+        <section data-panel="strategies" aria-labelledby="heading-strategies" hidden>
+          <h1 id="heading-strategies">Стратегии</h1><p class="intro">Способ обработки HTTP и TLS для выбранных сервисов и IP-наборов.</p>
+          <fieldset class="settings-fields"><legend class="sr-only">Стратегия обхода</legend><div id="profile-options" class="option-list"></div></fieldset>
+          <div class="autopick"><button id="auto">Подобрать автоматически</button><p class="caption">Проверим четыре стратегии по выбранным Discord и YouTube. Подбор перезапускает прокси; игровые соединения он не проверяет.</p></div>
+        </section>
+        <section data-panel="help" aria-labelledby="heading-help" hidden>
+          <h1 id="heading-help">Как подключиться</h1>
+          <ol class="help-steps"><li><strong>Запусти локальный прокси</strong><p>Выбери сервисы и стратегию, сохрани настройки и нажми «Подключить».</p></li><li><strong>Укажи адрес в приложении</strong><p>В настройках Firefox выбери ручной прокси SOCKS5, адрес 127.0.0.1 и порт с экрана подключения. Включи DNS через SOCKS5.</p></li><li><strong>Проверь сервисы</strong><p>Время отклика измеряется реальным HTTP-запросом. Проверка сайта не подтверждает работу звонка, видео или игровой сессии.</p></li></ol>
+          <h3>Что охватывают правила</h3><p>Только трафик, который приложение направило в SOCKS5. MuseDPI Desktop не меняет системный VPN, маршруты и страну подключения. Для игр без SOCKS понадобится отдельная маршрутизация трафика.</p>
+          <h3>Настройки и перезапуск</h3><p>Настройки сохраняются на этом компьютере. Их применение при активном подключении перезапускает только прокси MuseDPI. Порт сохраняется до выхода из приложения.</p>
+          <p class="caption">MuseDPI Desktop 0.1.0-alpha.1 · ByeDPI 0.17.3</p>
+        </section>
+      </main>
+      <footer><div class="savebar" id="savebar" hidden><span>Есть изменения</span><button id="discard">Отменить</button><button id="save" class="primary">Сохранить</button></div><div id="message" role="status" aria-live="polite"></div></footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -18,6 +18,10 @@
 обрабатывает его ядром [ByeDPI](https://github.com/hufrea/byedpi) прямо на телефоне.
 Внешний VPN-сервер не используется.
 
+Для **Windows x64** доступна [MuseDPI Desktop Alpha](https://github.com/zondaxxx/MuseDPI/releases/tag/desktop-v0.1.0-alpha.1):
+локальный SOCKS5 с выбором сервисов, IP-наборами и игровыми TCP/UDP-фильтрами.
+Desktop пока не создаёт системный туннель — трафик нужно направить в SOCKS5 из приложения.
+
 > MuseDPI не скрывает IP-адрес, не меняет страну и не добавляет VPN-шифрование.
 > Системный VPN нужен только для маршрутизации трафика в локальное ядро.
 
@@ -77,6 +81,17 @@
 | Экспертный режим | DNS, прокси, списки, тестер | классический экран ByeByeDPI: командная строка, UI-редактор, тестер |
 
 ## Быстрый старт
+
+### Windows · Alpha
+
+1. Скачайте `MuseDPI-Desktop-0.1.0-alpha.1-windows-x64.zip` из [alpha-релиза](https://github.com/zondaxxx/MuseDPI/releases/tag/desktop-v0.1.0-alpha.1).
+2. Распакуйте всю папку и запустите `MuseDPI.exe`.
+3. Выберите сервисы, сохраните настройки, нажмите «Подключить».
+4. Укажите адрес SOCKS5 и DNS через прокси в браузере или приложении.
+
+Это ранняя неподписанная сборка. Игровой UDP-режим экспериментальный; HTTP-проверки
+не подтверждают работоспособность игр, звонков или видео. Подробности и сборка из
+исходников — [desktop/README.md](./desktop/README.md).
 
 ### Android
 
@@ -159,6 +174,7 @@ Sources/ByeDPIC/                 встроенное C-ядро byedpi
 Sources/ByeDPIKit/               Swift-обёртка над ядром
 Sources/SwByeDPI/                модели, списки и диагностика
 android/                         Android-приложение (Kotlin/Compose, byedpi + hev-socks5-tunnel)
+desktop/                         Windows x64 Alpha (Electron + локальный SOCKS5)
 strategy-catalog.json            обновляемый онлайн-каталог
 strategy-catalog.json.sig        подпись каталога Ed25519
 scripts/                         сборка и валидация

@@ -1,0 +1,19 @@
+{
+  "name": "musedpi-desktop",
+  "version": "0.1.0-alpha.1",
+  "description": "MuseDPI desktop SOCKS alpha",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.cjs",
+    "smoke": "node scripts/smoke.cjs",
+    "engine:windows": "node scripts/prepare-engine.mjs",
+    "package:windows": "node scripts/package.mjs"
+  },
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "44.5.1"
+  }
+}

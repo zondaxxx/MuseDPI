@@ -1,0 +1,52 @@
+name: MuseDPI Desktop Alpha
+
+on:
+  push:
+    paths:
+      - 'desktop/**'
+      - '.github/workflows/desktop.yml'
+  pull_request:
+    paths:
+      - 'desktop/**'
+      - '.github/workflows/desktop.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - run: npm ci
+      - run: npm run engine:windows
+      - run: npm test
+        env:
+          MUSE_TEST_ENGINE: '${{ github.workspace }}/desktop/engine/ciadpi.exe'
+      - run: npm run package:windows
+      - name: Create release archive and checksum
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          $filename = "MuseDPI-Desktop-$version-windows-x64.zip"
+          Compress-Archive -Path dist/MuseDPI-win32-x64 -DestinationPath "dist/$filename" -CompressionLevel Optimal
+          $hash = (Get-FileHash "dist/$filename" -Algorithm SHA256).Hash.ToLowerInvariant()
+          [System.IO.File]::WriteAllText((Join-Path $PWD 'dist/SHA256SUMS.txt'), "$hash  $filename`n", [System.Text.UTF8Encoding]::new($false))
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MuseDPI-Desktop-windows-x64
+          path: |
+            desktop/dist/MuseDPI-Desktop-*-windows-x64.zip
+            desktop/dist/SHA256SUMS.txt
+          if-no-files-found: error
+          compression-level: 0
