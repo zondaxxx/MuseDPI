@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="../RepoAssets/palka-banner.png" width="100%" alt="PalkaDPI for iOS and Android" />
+  <img src="../RepoAssets/muse-banner.png" width="100%" alt="MuseDPI for iOS and Android" />
 </p>
 
-# PalkaDPI for Android
+# MuseDPI for Android
 
-Android-версия PalkaDPI: локальный обход DPI без внешнего VPN-сервера, с тем же
+Android-версия MuseDPI: локальный обход DPI без внешнего VPN-сервера, с тем же
 интерфейсом, что и на iPhone. Основа — форк
 [romanvht/ByeDPIAndroid](https://github.com/romanvht/ByeDPIAndroid) (GPL-3.0) с ядром
 [hufrea/byedpi](https://github.com/hufrea/byedpi) и hev-socks5-tunnel.
 
 ## Что внутри
 
-**Интерфейс PalkaDPI** (`palka/ui/`, Jetpack Compose) — построчный порт SwiftUI-экранов iOS:
+**Интерфейс MuseDPI** (`palka/ui/`, Jetpack Compose) — построчный порт SwiftUI-экранов iOS:
 тёмный фон с сеткой, карточки, белые кнопки, пульсирующий статус, анимации входа и нажатия.
 Экраны: главный, настройки, автонастройка, защищаемые сервисы, каталог стратегий,
 избранное и история, диагностика, сети и автоподключение, приложения в обходе, экспертные.
@@ -38,7 +38,7 @@ Android-версия PalkaDPI: локальный обход DPI без внеш
 ярлыки, классический экран ByeByeDPI со всеми параметрами ядра.
 
 Ядро byedpi вшито в репозиторий (`app/src/main/cpp/byedpi`, upstream `ba53229`) с
-патчем PalkaDPI из `PalkaDPI/patches/byedpi/0001-palkadpi-core.patch`
+патчем MuseDPI из `MuseDPI/patches/byedpi/0001-palkadpi-core.patch`
 (`-l hex:` бинарные фейки, `-k/--udp-drop` для блокировки QUIC).
 
 ## Сборка
@@ -55,6 +55,6 @@ Release-подпись берётся из окружения (`PALKA_KEYSTORE`,
 
 Внутренний Kotlin-пакет и JNI-имена оставлены как в upstream (`io.github.romanvht.byedpi`),
 изменён только `applicationId` (`io.github.zondaxxx.palkadpi`), чтобы приложение
-ставилось рядом с оригинальным ByeByeDPI. Код PalkaDPI лежит в
+ставилось рядом с оригинальным ByeByeDPI. Код MuseDPI лежит в
 `app/src/main/java/io/github/romanvht/byedpi/palka/`; строки интерфейса генерируются из
 iOS `Localizable.strings` в `res/values*/palka_strings.xml`, так что тексты совпадают.

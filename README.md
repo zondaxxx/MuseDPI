@@ -1,34 +1,33 @@
 <p align="center">
-  <img src="./RepoAssets/palka-banner.png" width="100%" alt="PalkaDPI for iOS and Android" />
+  <img src="./RepoAssets/muse-banner.png" width="100%" alt="MuseDPI for iOS and Android" />
 </p>
 
 <p align="center">
-  <a href="https://github.com/zondaxxx/PalkaDPI/actions/workflows/build-release.yml"><img src="https://github.com/zondaxxx/PalkaDPI/actions/workflows/build-release.yml/badge.svg" alt="iOS build" /></a>
-  <a href="https://github.com/zondaxxx/PalkaDPI/actions/workflows/android.yml"><img src="https://github.com/zondaxxx/PalkaDPI/actions/workflows/android.yml/badge.svg" alt="Android build" /></a>
-  <a href="https://github.com/zondaxxx/PalkaDPI/releases"><img src="https://img.shields.io/github/v/release/zondaxxx/PalkaDPI?color=ffffff&label=release&labelColor=09090d" alt="Latest release" /></a>
+  <a href="https://github.com/zondaxxx/MuseDPI/actions/workflows/build-release.yml"><img src="https://github.com/zondaxxx/MuseDPI/actions/workflows/build-release.yml/badge.svg" alt="iOS build" /></a>
+  <a href="https://github.com/zondaxxx/MuseDPI/actions/workflows/android.yml"><img src="https://github.com/zondaxxx/MuseDPI/actions/workflows/android.yml/badge.svg" alt="Android build" /></a>
+  <a href="https://github.com/zondaxxx/MuseDPI/releases"><img src="https://img.shields.io/github/v/release/zondaxxx/MuseDPI?color=ffffff&label=release&labelColor=09090d" alt="Latest release" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-ffffff?labelColor=09090d" alt="AGPL-3.0" /></a>
   <img src="https://img.shields.io/badge/iOS-14%2B-ffffff?labelColor=09090d" alt="iOS 14+" />
   <img src="https://img.shields.io/badge/Android-5%2B-ffffff?labelColor=09090d" alt="Android 5+" />
 </p>
 
-# PalkaDPI
+# MuseDPI
 
 Локальный обход DPI для **iPhone и Android** с одинаковым интерфейсом. Приложение
 поднимает системный VPN-туннель, направляет трафик в локальный SOCKS-прокси и
 обрабатывает его ядром [ByeDPI](https://github.com/hufrea/byedpi) прямо на телефоне.
 Внешний VPN-сервер не используется.
 
-> PalkaDPI не скрывает IP-адрес, не меняет страну и не добавляет VPN-шифрование.
+> MuseDPI не скрывает IP-адрес, не меняет страну и не добавляет VPN-шифрование.
 > Системный VPN нужен только для маршрутизации трафика в локальное ядро.
 
-<table align="center">
-  <tr>
-    <td align="center"><img src="./RepoAssets/screens/ios-home.jpg" width="200" alt="iOS: главный экран" /><br /><sub>iOS · главный экран</sub></td>
-    <td align="center"><img src="./RepoAssets/screens/android-home.jpg" width="200" alt="Android: подключено" /><br /><sub>Android · подключено</sub></td>
-    <td align="center"><img src="./RepoAssets/screens/android-auto.jpg" width="200" alt="Android: автонастройка" /><br /><sub>Android · автонастройка</sub></td>
-    <td align="center"><img src="./RepoAssets/screens/android-catalog.jpg" width="200" alt="Android: каталог стратегий" /><br /><sub>Android · каталог</sub></td>
-  </tr>
-</table>
+[Визуальная система MuseDPI](./docs/MUSEDPI-BRAND.md): глубокий морской синий,
+морское стекло, спокойные волны и логотип «m». Старые скриншоты в `RepoAssets/screens/`
+относятся к предыдущему интерфейсу и не показывают текущий дизайн.
+
+<p align="center">
+  <img src="./RepoAssets/screens/muse-android-home.png" width="280" alt="MuseDPI: новый главный экран Android" />
+</p>
 
 
 ## Возможности
@@ -62,7 +61,7 @@
 
 ### Android
 
-1. Скачайте APK из [релизов `android-v*`](https://github.com/zondaxxx/PalkaDPI/releases)
+1. Скачайте APK из [релизов `android-v*`](https://github.com/zondaxxx/MuseDPI/releases)
    (`app-universal-release.apk` подходит для всех телефонов).
 2. Установите, откройте и нажмите «Подключить» — Android попросит разрешение на VPN.
 3. Если сервисы не открываются — «Автоматическая настройка» → «Подобрать и подключить».
@@ -71,7 +70,7 @@
 
 ### iOS
 
-1. Скачайте [последний unsigned IPA](https://github.com/zondaxxx/PalkaDPI/releases/latest/download/PalkaDPI-unsigned.ipa).
+1. Скачайте unsigned IPA из [релизов iOS](https://github.com/zondaxxx/MuseDPI/releases) (теги `v*`, не `android-v*`). Старые сборки называются `PalkaDPI-unsigned.ipa`, новые — `MuseDPI-unsigned.ipa`.
 2. Подпишите `PalkaWidget.appex`, затем `ByeByeDPITun.appex`, затем основное приложение.
 3. Установите IPA на физический iPhone.
 4. Выберите нужные сервисы и нажмите «Автонастройка» — приложение само проверит стратегии.
@@ -89,7 +88,7 @@
 [отделённую подпись](./strategy-catalog.json.sig) напрямую из этого репозитория
 по HTTPS. Каталог можно безопасно обновлять без перевыпуска IPA.
 
-Перед применением PalkaDPI проверяет Ed25519-подпись, схему, совместимость с
+Перед применением MuseDPI проверяет Ed25519-подпись, схему, совместимость с
 версией приложения и ядра, отозванные записи, HTTPS-источники и аргументы ByeDPI.
 Три последних проверенных поколения доступны офлайн; из настроек можно выполнить
 откат на предыдущее поколение.
@@ -101,13 +100,13 @@
 Главный экран делает несколько небольших HTTPS-запросов к официальным адресам
 выбранных сервисов. Это не ICMP-ping: приложение показывает медианный HTTP round
 trip, а подробный экран отдельно отображает DNS, TLS и HTTP. При активном туннеле
-запросы проходят через текущую конфигурацию PalkaDPI.
+запросы проходят через текущую конфигурацию MuseDPI.
 
 ## Сборка
 
 ```bash
-git clone https://github.com/zondaxxx/PalkaDPI.git
-cd PalkaDPI
+git clone https://github.com/zondaxxx/MuseDPI.git
+cd MuseDPI
 open SwByeDPI.xcodeproj
 ```
 
@@ -120,7 +119,7 @@ PALKA_APP_GROUP=group.your.unique.palkadpi \
 ./scripts/build_unsigned_ipa.sh
 ```
 
-Результат: `packages/PalkaDPI-unsigned.ipa`.
+Результат: `packages/MuseDPI-unsigned.ipa`.
 
 Android (JDK 17, Android SDK с `ndk;27.x` и `cmake;3.22.1`):
 
@@ -148,7 +147,7 @@ scripts/                         сборка и валидация
 
 ## Происхождение проекта
 
-PalkaDPI — производная работа от [mIwr/SwByeDPI](https://github.com/mIwr/SwByeDPI)
+MuseDPI — производная работа от [mIwr/SwByeDPI](https://github.com/mIwr/SwByeDPI)
 с ядром [hufrea/byedpi](https://github.com/hufrea/byedpi). iOS-профили основаны
 на актуальных конфигурациях [Flowseal/zapret-discord-youtube](https://github.com/Flowseal/zapret-discord-youtube)
 и документации [bol-van/zapret](https://github.com/bol-van/zapret): доступные на

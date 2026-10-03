@@ -1,6 +1,6 @@
-# PalkaDPI for iOS
+# MuseDPI for iOS
 
-PalkaDPI is a local, system-wide DPI bypass prototype for iOS 14 and newer. It
+MuseDPI is a local, system-wide DPI bypass prototype for iOS 14 and newer. It
 uses `NEPacketTunnelProvider`, `Tun2SocksKit`, and the native ByeDPI core. No
 remote VPN server is used: outbound connections leave directly from the phone.
 
@@ -44,7 +44,7 @@ xcodebuild \
   -scheme ByeByeDPI \
   -configuration Release \
   -destination 'generic/platform=iOS' \
-  -archivePath packages/PalkaDPI.xcarchive \
+  -archivePath packages/MuseDPI.xcarchive \
   -allowProvisioningUpdates \
   archive \
   DEVELOPMENT_TEAM=YOUR_TEAM_ID \
@@ -62,7 +62,7 @@ PALKA_APP_GROUP=group.your.unique.palkadpi \
 ./scripts/build_unsigned_ipa.sh
 ```
 
-The result is `packages/PalkaDPI-unsigned.ipa`. When signing manually, sign the
+The result is `packages/MuseDPI-unsigned.ipa`. When signing manually, sign the
 embedded `PalkaWidget.appex`, then `ByeByeDPITun.appex`, and the host app last.
 All signatures must contain the same App Group; only the tunnel extension must
 retain the `packet-tunnel-provider` entitlement.
@@ -76,7 +76,7 @@ retain the `packet-tunnel-provider` entitlement.
 4. Test media, login, calls, and messages separately where relevant.
 5. Enable On Demand and confirm the saved Wi-Fi/cellular profiles switch after
    changing networks.
-6. Add the PalkaDPI widget and run the Siri/Shortcuts start, stop, toggle, and
+6. Add the MuseDPI widget and run the Siri/Shortcuts start, stop, toggle, and
    service-check actions.
 7. If access fails, inspect Settings -> Diagnostics and try the offered fallback
    or a previous signed catalog generation.
@@ -87,7 +87,7 @@ retain the `packet-tunnel-provider` entitlement.
   WinDivert, NFQUEUE, arbitrary raw TCP injection, or per-app VPN selection to a
   normal developer-signed app.
 - QUIC uses UDP/443 and cannot be filtered by SNI with this core. By default
-  PalkaDPI drops UDP/443 inside the tunnel (`--udp-drop`, Settings -> "Block
+  MuseDPI drops UDP/443 inside the tunnel (`--udp-drop`, Settings -> "Block
   QUIC"), so HTTP/3 clients fall back to TCP/TLS at once; games, calls and other
   UDP apps use different ports and keep working. Turn it off if a site needs QUIC.
 - DPI strategies depend on the ISP. The included strategy is a conservative
@@ -103,6 +103,6 @@ This project is derived from
 distributed under the included AGPL-3.0 license; the embedded byedpi core keeps
 its upstream MIT license notice.
 
-PalkaDPI has no accounts, analytics, or remote VPN service. See
+MuseDPI has no accounts, analytics, or remote VPN service. See
 [`docs/PRIVACY.md`](./docs/PRIVACY.md) for the exact local data and network
 requests used by diagnostics and catalog updates.

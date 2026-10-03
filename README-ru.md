@@ -1,4 +1,4 @@
-# PalkaDPI
+# MuseDPI
 
 Русская документация проекта находится в основном [README.md](./README.md).
 
