@@ -61,19 +61,19 @@ jobs:
 
       - name: Verify package
         run: |
-          unzip -t packages/PalkaDPI-unsigned.ipa
-          unzip -l packages/PalkaDPI-unsigned.ipa | grep -F "Payload/PalkaDPI.app/PlugIns/ByeByeDPITun.appex/"
-          unzip -l packages/PalkaDPI-unsigned.ipa | grep -F "Payload/PalkaDPI.app/PlugIns/PalkaWidget.appex/"
+          unzip -t packages/MuseDPI-unsigned.ipa
+          unzip -l packages/MuseDPI-unsigned.ipa | grep -F "Payload/MuseDPI.app/PlugIns/ByeByeDPITun.appex/"
+          unzip -l packages/MuseDPI-unsigned.ipa | grep -F "Payload/MuseDPI.app/PlugIns/PalkaWidget.appex/"
           cd packages
-          shasum -a 256 PalkaDPI-unsigned.ipa > PalkaDPI-unsigned.ipa.sha256
+          shasum -a 256 MuseDPI-unsigned.ipa > MuseDPI-unsigned.ipa.sha256
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PalkaDPI-${{ github.sha }}
+          name: MuseDPI-${{ github.sha }}
           path: |
-            packages/PalkaDPI-unsigned.ipa
-            packages/PalkaDPI-unsigned.ipa.sha256
+            packages/MuseDPI-unsigned.ipa
+            packages/MuseDPI-unsigned.ipa.sha256
           if-no-files-found: error
           retention-days: 30
 
@@ -83,15 +83,21 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag="$GITHUB_REF_NAME"
+          version="${tag#v}"
+          title="MuseDPI · iOS $version"
+          asset="MuseDPI-$version-unsigned.ipa"
+          cp packages/MuseDPI-unsigned.ipa "packages/$asset"
+          (cd packages && shasum -a 256 "$asset" > "$asset.sha256")
           if gh release view "$tag" >/dev/null 2>&1; then
+            gh release edit "$tag" --title "$title"
             gh release upload "$tag" \
-              packages/PalkaDPI-unsigned.ipa \
-              packages/PalkaDPI-unsigned.ipa.sha256 \
+              "packages/$asset" \
+              "packages/$asset.sha256" \
               --clobber
           else
             gh release create "$tag" \
-              packages/PalkaDPI-unsigned.ipa \
-              packages/PalkaDPI-unsigned.ipa.sha256 \
-              --title "PalkaDPI $tag" \
+              "packages/$asset" \
+              "packages/$asset.sha256" \
+              --title "$title" \
               --generate-notes
           fi

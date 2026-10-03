@@ -1,6 +1,6 @@
 <resources>
     <string name="byedpi_docs">https://github.com/hufrea/byedpi/blob/main/README.md</string>
-    <string name="app_name">PalkaDPI</string>
+    <string name="app_name">MuseDPI</string>
     <string name="cmd_documentation">Документация ByeDPI</string>
     <string name="toggle_connect">Вкл/Выкл</string>
     <string name="vpn_connect">Подключить</string>
@@ -55,13 +55,13 @@
     <string name="byedpi_tlsrec_enabled_setting">Разделить TLS запись</string>
     <string name="byedpi_tlsrec_position_setting">Позиция разделения TLS записи</string>
     <string name="byedpi_tlsrec_at_sni_setting">Разделить TLS запись в SNI</string>
-    <string name="version">PalkaDPI</string>
+    <string name="version">MuseDPI</string>
     <string name="source_code_link">Исходный код</string>
     <string name="byedpi_readme_link">Что все это значит?</string>
     <string name="failed_to_start">Не удалось запустить %1$s</string>
     <string name="vpn_channel_name">VPN</string>
     <string name="proxy_channel_name">Прокси</string>
-    <string name="notification_title">PalkaDPI</string>
+    <string name="notification_title">MuseDPI</string>
     <string name="vpn_notification_content">VPN работает</string>
     <string name="proxy_notification_content">Прокси работает</string>
     <string name="general_category">Общие</string>
@@ -94,7 +94,7 @@
     <string name="automation">Автоматизация</string>
     <string name="autostart_settings">Автозапуск приложения при включении устройства</string>
     <string name="autohide_settings">Автоматически скрывать приложение после автозапуска</string>
-    <string name="autoconnect_settings">Автоматическое подключение при открытии PalkaDPI</string>
+    <string name="autoconnect_settings">Автоматическое подключение при открытии MuseDPI</string>
     <string name="applist_setting">Фильтр приложений</string>
     <string name="apps_select">Выбрать приложения</string>
     <string name="search_apps">Поиск приложений</string>

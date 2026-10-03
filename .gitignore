@@ -26,3 +26,5 @@ Podfile.lock
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
+__pycache__/
+*.pyc

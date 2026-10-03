@@ -1,4 +1,4 @@
-# PalkaDPI 0.4.3
+# MuseDPI 0.4.3
 
 This release replaces the previous approximation with strategies that match the
 capabilities of the Apple ByeDPI build.
@@ -24,6 +24,6 @@ capabilities of the Apple ByeDPI build.
 
 ## Branding
 
-- Added the PalkaDPI fragmented-P app icon and repository mark.
+- Added the MuseDPI fragmented-P app icon and repository mark.
 - The main app, widget, VPN profile, tunnel display name, shortcuts, and
-  user-facing expert labels consistently use PalkaDPI.
+  user-facing expert labels consistently use MuseDPI.

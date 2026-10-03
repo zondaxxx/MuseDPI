@@ -1,4 +1,4 @@
-# PalkaDPI 0.4.2
+# MuseDPI 0.4.2
 
 This release fixes the automatic strategy test lifecycle.
 

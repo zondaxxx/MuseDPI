@@ -1515,7 +1515,7 @@
 				CODE_SIGN_ENTITLEMENTS = Example/Sources/PalkaWidget/PalkaWidget.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -1526,7 +1526,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.7;
+				MARKETING_VERSION = 0.4.8;
 				PALKA_APP_GROUP = group.dev.local.palkadpi;
 				PALKA_BUNDLE_ID = dev.local.palkadpi;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(PALKA_BUNDLE_ID).widget";
@@ -1546,7 +1546,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = Example/Sources/PalkaWidget/PalkaWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -1557,7 +1557,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.7;
+				MARKETING_VERSION = 0.4.8;
 				PALKA_APP_GROUP = group.dev.local.palkadpi;
 				PALKA_BUNDLE_ID = dev.local.palkadpi;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(PALKA_BUNDLE_ID).widget";
@@ -1580,16 +1580,16 @@
 				CODE_SIGN_ENTITLEMENTS = Example/Sources/ByeByeDPI/ByeByeDPIDebug.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_ASSET_PATHS = Example/Sources/ByeByeDPI/PreviewContent/PreviewAssets.xcassets;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Sources/ByeDPIC/include";
 				INFOPLIST_FILE = Example/Sources/ByeByeDPI/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PalkaDPI;
+				INFOPLIST_KEY_CFBundleDisplayName = MuseDPI;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "PalkaDPI uses a local proxy to process traffic on this device";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "MuseDPI uses a local proxy to process traffic on this device";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
@@ -1605,7 +1605,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.7;
+				MARKETING_VERSION = 0.4.8;
 				PALKA_APP_GROUP = group.dev.local.palkadpi;
 				PALKA_BUNDLE_ID = dev.local.palkadpi;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(PALKA_BUNDLE_ID)";
@@ -1633,16 +1633,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Example/Sources/ByeByeDPI/ByeByeDPI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_ASSET_PATHS = Example/Sources/ByeByeDPI/PreviewContent/PreviewAssets.xcassets;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Sources/ByeDPIC/include";
 				INFOPLIST_FILE = Example/Sources/ByeByeDPI/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PalkaDPI;
+				INFOPLIST_KEY_CFBundleDisplayName = MuseDPI;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "PalkaDPI uses a local proxy to process traffic on this device";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "MuseDPI uses a local proxy to process traffic on this device";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
@@ -1658,7 +1658,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.7;
+				MARKETING_VERSION = 0.4.8;
 				PALKA_APP_GROUP = group.dev.local.palkadpi;
 				PALKA_BUNDLE_ID = dev.local.palkadpi;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(PALKA_BUNDLE_ID)";
@@ -2289,14 +2289,14 @@
 				CODE_SIGN_ENTITLEMENTS = Example/Sources/ByeByeDPITun/ByeByeDPITunDebug.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Sources/ByeDPIC/include";
 				INFOPLIST_FILE = Example/Sources/ByeByeDPITun/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "PalkaDPI Tunnel";
+				INFOPLIST_KEY_CFBundleDisplayName = "MuseDPI Tunnel";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "PalkaDPI uses a local proxy to process traffic on this device";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "MuseDPI uses a local proxy to process traffic on this device";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2304,7 +2304,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.7;
+				MARKETING_VERSION = 0.4.8;
 				PALKA_APP_GROUP = group.dev.local.palkadpi;
 				PALKA_BUNDLE_ID = dev.local.palkadpi;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(PALKA_BUNDLE_ID).tun";
@@ -2330,14 +2330,14 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Example/Sources/ByeByeDPITun/ByeByeDPITun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Sources/ByeDPIC/include";
 				INFOPLIST_FILE = Example/Sources/ByeByeDPITun/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "PalkaDPI Tunnel";
+				INFOPLIST_KEY_CFBundleDisplayName = "MuseDPI Tunnel";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "PalkaDPI uses a local proxy to process traffic on this device";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "MuseDPI uses a local proxy to process traffic on this device";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2345,7 +2345,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.7;
+				MARKETING_VERSION = 0.4.8;
 				PALKA_APP_GROUP = group.dev.local.palkadpi;
 				PALKA_BUNDLE_ID = dev.local.palkadpi;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(PALKA_BUNDLE_ID).tun";

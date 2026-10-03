@@ -1,9 +1,9 @@
-"appIntentStartByeDPIVPNTitle" = "Start PalkaDPI";
-"appIntentStartByeDPIVPNDesc" = "Starts PalkaDPI and its local packet tunnel";
-"appIntentStopByeDPIVPNTitle" = "Stop PalkaDPI";
-"appIntentStopByeDPIVPNDesc" = "Stops PalkaDPI and its local packet tunnel";
-"appIntentToggleByeDPIVPNTitle" = "Toggle PalkaDPI";
-"appIntentToggleByeDPIVPNDesc" = "Toggles the PalkaDPI packet tunnel";
-"appIntentToggleByeDPIVPRunngingParamTitle" = "Enable PalkaDPI";
-"appIntentCheckServicesTitle" = "Check PalkaDPI services";
+"appIntentStartByeDPIVPNTitle" = "Start MuseDPI";
+"appIntentStartByeDPIVPNDesc" = "Starts MuseDPI and its local packet tunnel";
+"appIntentStopByeDPIVPNTitle" = "Stop MuseDPI";
+"appIntentStopByeDPIVPNDesc" = "Stops MuseDPI and its local packet tunnel";
+"appIntentToggleByeDPIVPNTitle" = "Toggle MuseDPI";
+"appIntentToggleByeDPIVPNDesc" = "Toggles the MuseDPI packet tunnel";
+"appIntentToggleByeDPIVPRunngingParamTitle" = "Enable MuseDPI";
+"appIntentCheckServicesTitle" = "Check MuseDPI services";
 "appIntentCheckServicesDesc" = "Checks selected services through the current connection";

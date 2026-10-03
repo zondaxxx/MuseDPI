@@ -26,7 +26,7 @@ struct PalkaStrategyStats: Codable, Identifiable, Equatable {
 final class StrategyLibraryStore: ObservableObject {
     @Published private(set) var records: [PalkaStrategyStats] = []
 
-    private let key = "PalkaDPI.strategyLibrary.v1"
+    private let key = "MuseDPI.strategyLibrary.v1"
     private let defaults: UserDefaults
 
     init() {

@@ -25,7 +25,7 @@ Source repositories:
 - https://github.com/Flowseal/zapret-discord-youtube
 - https://github.com/bol-van/zapret
 
-PalkaDPI's signed strategy catalog embeds the following unmodified binary
+MuseDPI's signed strategy catalog embeds the following unmodified binary
 payloads as hexadecimal strings:
 - bin/quic_initial_www_google_com.bin
   SHA-256 f4589c57749f956bb30538197a521d7005f8b0a8723b4707e72405e51ddac50a

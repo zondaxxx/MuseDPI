@@ -14,13 +14,13 @@ final class Constants {
     static let PSEUDO_BUNDLE_VERSION = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     static let PSEUDO_BUNDLE_BUILD_NUMBER = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
     
-    static let sourceCodeLink = "https://github.com/zondaxxx/PalkaDPI"
+    static let sourceCodeLink = "https://github.com/zondaxxx/MuseDPI"
     static let acknowledgementsLink = sourceCodeLink + "/blob/main/ACKNOWLEDGEMENTS.md"
     static let strategyCatalogURL = URL(
-        string: "https://raw.githubusercontent.com/zondaxxx/PalkaDPI/main/strategy-catalog.json"
+        string: "https://raw.githubusercontent.com/zondaxxx/MuseDPI/main/strategy-catalog.json"
     )!
     static let strategyCatalogSignatureURL = URL(
-        string: "https://raw.githubusercontent.com/zondaxxx/PalkaDPI/main/strategy-catalog.json.sig"
+        string: "https://raw.githubusercontent.com/zondaxxx/MuseDPI/main/strategy-catalog.json.sig"
     )!
     static let strategyCatalogPublicKeyBase64 = "18bFOLUFcXXG6/56v8NnWS/SO6SxTxFIhdD5Vmz43jg="
     

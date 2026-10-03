@@ -81,7 +81,7 @@
 ### Android
 
 1. Скачайте APK из [релизов `android-v*`](https://github.com/zondaxxx/MuseDPI/releases)
-   (`app-universal-release.apk` подходит для всех телефонов).
+   (`MuseDPI-*-universal-release.apk` подходит для всех телефонов).
 2. Установите, откройте и нажмите «Подключить» — Android попросит разрешение на VPN.
 3. Если сервисы не открываются — «Автоматическая настройка» → «Подобрать и подключить».
 

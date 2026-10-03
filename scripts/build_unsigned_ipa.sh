@@ -5,7 +5,7 @@ set -euo pipefail
 project_root="$(cd "$(dirname "$0")/.." && pwd)"
 project_file="$project_root/SwByeDPI.xcodeproj"
 output_dir="$project_root/packages"
-output_file="$output_dir/PalkaDPI-unsigned.ipa"
+output_file="$output_dir/MuseDPI-unsigned.ipa"
 bundle_id="${PALKA_BUNDLE_ID:-dev.local.palkadpi}"
 app_group="${PALKA_APP_GROUP:-group.$bundle_id}"
 
@@ -21,7 +21,7 @@ if ! xcrun --sdk iphoneos --show-sdk-path >/dev/null 2>&1; then
 fi
 
 work_dir="$(mktemp -d -t palkadpi-build.XXXXXX)"
-archive_path="$work_dir/PalkaDPI.xcarchive"
+archive_path="$work_dir/MuseDPI.xcarchive"
 payload_dir="$work_dir/Payload"
 
 cleanup() {
@@ -57,7 +57,7 @@ if [[ ! -d "$app_path" || ! -d "$extension_path" || ! -d "$widget_path" ]]; then
 fi
 
 mkdir -p "$payload_dir"
-ditto "$app_path" "$payload_dir/PalkaDPI.app"
+ditto "$app_path" "$payload_dir/MuseDPI.app"
 
 (
     cd "$work_dir"

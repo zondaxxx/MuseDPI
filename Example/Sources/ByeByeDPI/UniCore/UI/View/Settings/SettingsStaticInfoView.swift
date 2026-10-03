@@ -33,7 +33,7 @@ struct SettingsStaticInfoView: View {
                     .multilineTextAlignment(.leading)
                     .foregroundColor(PalkaDesign.textMuted)
                 Text(text)
-                    .font(.system(size: 14, weight: .regular, design: .monospaced))
+                    .font(.system(size: 14, weight: .regular))
                     .multilineTextAlignment(.leading)
                     .foregroundColor(PalkaDesign.textPrimary)
                     .lineSpacing(3)

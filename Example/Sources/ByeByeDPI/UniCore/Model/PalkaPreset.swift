@@ -11,7 +11,7 @@ import Foundation
 
 enum PalkaPreset {
     static let id = "builtin.multisplit.v3"
-    static let name = "PalkaDPI Multisplit"
+    static let name = "MuseDPI Multisplit"
 
     static let catalogTargetsPlaceholder = "{palka_targets}"
     static var hostsArgument: String {

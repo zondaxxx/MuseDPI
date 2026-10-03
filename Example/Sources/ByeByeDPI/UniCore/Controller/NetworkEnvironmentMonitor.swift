@@ -13,7 +13,7 @@ final class NetworkEnvironmentMonitor: ObservableObject {
     @Published private(set) var isConstrained = false
 
     private let monitor = NWPathMonitor()
-    private let queue = DispatchQueue(label: "PalkaDPI.NetworkEnvironment")
+    private let queue = DispatchQueue(label: "MuseDPI.NetworkEnvironment")
 
     init() {
         monitor.pathUpdateHandler = { [weak self] path in

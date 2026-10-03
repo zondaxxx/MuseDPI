@@ -657,7 +657,7 @@ enum PalkaSupportReportBuilder {
             return nil
         }
         let url = FileManager.default.temporaryDirectory
-            .appendingPathComponent("PalkaDPI-support-report.json")
+            .appendingPathComponent("MuseDPI-support-report.json")
         do {
             try data.write(to: url, options: .atomic)
             return url

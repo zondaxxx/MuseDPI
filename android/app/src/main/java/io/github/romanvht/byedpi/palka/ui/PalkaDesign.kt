@@ -74,26 +74,26 @@ import kotlinx.coroutines.delay
 
 /** Shared visual language, a 1:1 port of PalkaDesign.swift. */
 object PalkaDesign {
-    val background = Color(0xFF050508)
-    val surface = Color.White.copy(alpha = 0.05f)
-    val elevatedSurface = Color.White.copy(alpha = 0.09f)
+    val background = Color(0xFF06131C)
+    val surface = Color(0xFF122430)
+    val elevatedSurface = Color(0xFF1A3340)
 
     val textPrimary = Color.White.copy(alpha = 0.96f)
     val textSecondary = Color.White.copy(alpha = 0.68f)
-    val textMuted = Color.White.copy(alpha = 0.43f)
+    val textMuted = Color.White.copy(alpha = 0.62f)
     val textDim = Color.White.copy(alpha = 0.22f)
 
     val border = Color.White.copy(alpha = 0.10f)
     val borderStrong = Color.White.copy(alpha = 0.15f)
-    val success = Color(0xFF21C45E)
-    val successText = Color(0xFFA8F0BF)
+    val success = Color(0xFF4DC4C2)
+    val successText = Color(0xFFA8E8E0)
     val errorText = Color(0xFFF78282)
     val warning = Color(0xFFFF9F0A)
     val onPrimary = Color(0xFF07070E)
 
-    val screenPadding = 16.dp
-    val sectionSpacing = 24.dp
-    val cardRadius = 20.dp
+    val screenPadding = 20.dp
+    val sectionSpacing = 28.dp
+    val cardRadius = 24.dp
 
     /** iOS "timingCurve(0.32, 0.72, 0, 1)" used for every press and entrance. */
     val easing = CubicBezierEasing(0.32f, 0.72f, 0f, 1f)
@@ -123,20 +123,19 @@ fun PalkaBackground(modifier: Modifier = Modifier) {
     val fade = with(LocalDensity.current) { 220.dp.toPx() }
     Canvas(modifier.fillMaxSize()) {
         drawRect(PalkaDesign.background)
-        val gridColor = Color.White.copy(alpha = 0.035f)
-        var x = 0f
-        while (x <= size.width) {
-            drawLine(gridColor, Offset(x, 0f), Offset(x, size.height), line)
-            x += step
-        }
-        var y = 0f
+        val gridColor = PalkaDesign.success.copy(alpha = 0.08f)
+        var y = size.height * 0.65f
         while (y <= size.height) {
-            drawLine(gridColor, Offset(0f, y), Offset(size.width, y), line)
+            val wave = androidx.compose.ui.graphics.Path().apply {
+                moveTo(0f, y)
+                cubicTo(size.width * 0.35f, y - 30f, size.width * 0.65f, y + 30f, size.width, y)
+            }
+            drawPath(wave, gridColor, style = androidx.compose.ui.graphics.drawscope.Stroke(line))
             y += step
         }
         drawRect(
             Brush.radialGradient(
-                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.72f)),
+                colors = listOf(Color.Transparent, PalkaDesign.background.copy(alpha = 0.32f)),
                 center = center,
                 radius = maxOf(size.width, size.height) * 0.72f
             )

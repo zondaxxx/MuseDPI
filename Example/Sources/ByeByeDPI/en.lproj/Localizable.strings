@@ -1,14 +1,15 @@
-"palkaTitle" = "PalkaDPI";
+"palkaTitle" = "MuseDPI";
+"palkaLastChecked" = "Last checked:";
 "palkaSubtitle" = "Local DPI bypass without a remote VPN";
 "palkaPreset" = "Preset: %@";
 "palkaApplyPreset" = "Restore Discord + YouTube preset";
 "palkaApplyPresetDescription" = "Resets only the DPI strategy; DNS and proxy address stay unchanged";
-"palkaStatusActive" = "PROTECTION ACTIVE";
+"palkaStatusActive" = "LOCAL TUNNEL ACTIVE";
 "palkaStatusInactive" = "READY TO CONNECT";
-"palkaProtectionOnTitle" = "Traffic protection is on";
-"palkaProtectionOffTitle" = "Open blocked services";
-"palkaProtectionOnDescription" = "Discord and YouTube traffic is processed locally on this device.";
-"palkaProtectionOffDescription" = "Start the local tunnel to apply DPI bypass without a remote VPN server.";
+"palkaProtectionOnTitle" = "Local bypass is on";
+"palkaProtectionOffTitle" = "Stay freely connected";
+"palkaProtectionOnDescription" = "Selected services are processed on your device. Check their availability below.";
+"palkaProtectionOffDescription" = "Choose your services and connect. Everything runs on your device.";
 "palkaConnect" = "Connect";
 "palkaDisconnect" = "Disconnect";
 "palkaPleaseWait" = "Please wait";
@@ -37,14 +38,14 @@
 "palkaCurrentStrategyFormat" = "Current: %@";
 "palkaAdvancedSection" = "For experienced users";
 "palkaAdvancedSettings" = "Expert settings";
-"palkaAdvancedSettingsDescription" = "DNS, proxy parameters, domain lists, testing, and raw PalkaDPI engine commands";
+"palkaAdvancedSettingsDescription" = "DNS, proxy parameters, domain lists, testing, and raw MuseDPI engine commands";
 "palkaExpertTitle" = "Expert controls";
 "palkaExpertDescription" = "These settings can break connectivity. Change them only when you know what the parameter does.";
 "palkaAcknowledgements" = "Sources and acknowledgements";
 "palkaAcknowledgementsDescription" = "Upstream projects, dependencies, inspiration, and licenses";
 "palkaCatalogTitle" = "Online strategies";
 "palkaCatalogHeading" = "Find a working profile";
-"palkaCatalogInternetSource" = "Loaded securely from the PalkaDPI repository";
+"palkaCatalogInternetSource" = "Loaded securely from the MuseDPI repository";
 "palkaCatalogUpdatedFormat" = "Online catalog · updated %@";
 "palkaCatalogCachedFormat" = "Saved catalog · updated %@";
 "palkaCatalogSearchPlaceholder" = "Search by service or strategy";
@@ -56,7 +57,7 @@
 "palkaCatalogApplied" = "Active";
 "palkaCatalogInvalidResponse" = "The catalog returned invalid data";
 "palkaCatalogOfflineCache" = "The internet catalog is unavailable; showing the last saved version";
-"palkaCatalogStopFirst" = "Disconnect PalkaDPI before changing the active strategy";
+"palkaCatalogStopFirst" = "Disconnect MuseDPI before changing the active strategy";
 "palkaCustomStrategy" = "Custom strategy";
 "palkaTestedStrategy" = "Test result";
 "palkaAnalyzedStrategy" = "Analyzer result";
@@ -64,8 +65,8 @@
 "palkaCatalogRollback" = "Use previous verified catalog";
 "palkaCatalogFavorite" = "Add or remove favorite";
 "palkaAutoTitle" = "Automatic setup";
-"palkaAutoHeading" = "Let PalkaDPI choose";
-"palkaAutoDescription" = "PalkaDPI will test verified strategies against your selected services, choose the most reliable one, save it for this network type, and connect.";
+"palkaAutoHeading" = "Let MuseDPI choose";
+"palkaAutoDescription" = "MuseDPI will test verified strategies against your selected services, choose the most reliable one, save it for this network type, and connect.";
 "palkaAutoStart" = "Find and connect";
 "palkaAutoCancel" = "Stop testing";
 "palkaAutoStoppingVPN" = "Disconnecting the previous system VPN…";
@@ -95,8 +96,8 @@
 "palkaAutoHomeDescription" = "Find the best working strategy automatically";
 "palkaServicesTitle" = "Protected services";
 "palkaServicesHeading" = "Choose what should work";
-"palkaServicesDescription" = "PalkaDPI builds the target domain list automatically. At least one service must remain selected.";
-"palkaServicesStopFirst" = "Disconnect PalkaDPI before changing protected services";
+"palkaServicesDescription" = "MuseDPI builds the target domain list automatically. At least one service must remain selected.";
+"palkaServicesStopFirst" = "Disconnect MuseDPI before changing protected services";
 "palkaDiagnosticsTitle" = "Connection diagnostics";
 "palkaDiagnosticsHeading" = "Understand the problem";
 "palkaDiagnosticsDescription" = "Checks DNS, TLS, HTTP response, and stability without reading traffic contents or browsing history.";
@@ -112,7 +113,7 @@
 "palkaNetworkProfilesSettingsDescription" = "On Demand, Wi-Fi/cellular profiles, and smart recovery";
 "palkaOnDemandSection" = "VPN On Demand";
 "palkaOnDemandEnabled" = "Connect automatically";
-"palkaOnDemandDescription" = "Allow iOS to start PalkaDPI when network traffic appears";
+"palkaOnDemandDescription" = "Allow iOS to start MuseDPI when network traffic appears";
 "palkaOnDemandWiFi" = "Automatically connect on Wi-Fi";
 "palkaOnDemandCellular" = "Automatically connect on cellular";
 "palkaOnDemandSave" = "Save On Demand rules";
@@ -149,8 +150,8 @@
 "palkaServicePingUnavailable" = "No response";
 "homeVpnStateOff" = "Bypass is off";
 "homeVpnStateOn" = "Bypass is on";
-"homeSettingsAccessHint" = "Disable PalkaDPI before opening settings";
-"homeStartByeDPIErrTitle" = "PalkaDPI failed to start";
+"homeSettingsAccessHint" = "Disable MuseDPI before opening settings";
+"homeStartByeDPIErrTitle" = "MuseDPI failed to start";
 "homeStartByeDPIErrUnknownMsg" = "Unknown error";
 
 "settingsGeneralSection" = "General";
@@ -169,21 +170,21 @@
 "settingsGeneralExportSettingsOption" = "Export settings";
 "settingsGeneralExportSettingsOptionDesc" = "Export settings to file (Android BBD format)";
 
-"settingsByeDPISection" = "PalkaDPI engine";
+"settingsByeDPISection" = "MuseDPI engine";
 "settingsByeDPIArgsOption" = "Strategy command";
-"settingsByeDPIArgsOptionDesc" = "Edit PalkaDPI engine arguments";
-"settingsByeDPIArgsFieldTitle" = "PalkaDPI engine arguments";
+"settingsByeDPIArgsOptionDesc" = "Edit MuseDPI engine arguments";
+"settingsByeDPIArgsFieldTitle" = "MuseDPI engine arguments";
 "settingsByeDPIArgsFieldNoValuePlaceholder" = "No strategy args";
 "settingsByeDPIStrategyTestOption" = "Strategy checker";
-"settingsByeDPIStrategyTestOptionDesc" = "Advanced PalkaDPI strategy testing";
+"settingsByeDPIStrategyTestOptionDesc" = "Advanced MuseDPI strategy testing";
 "settingsByeDPITestAnalyzerOption" = "Strategy analyzer";
-"settingsByeDPITestAnalyzerOptionDesc" = "Build a PalkaDPI strategy from test results";
+"settingsByeDPITestAnalyzerOptionDesc" = "Build a MuseDPI strategy from test results";
 "settingsByeDPIDebugOption" = "Strategy debug";
-"settingsByeDPIDebugOptionDesc" = "Debug a PalkaDPI strategy and edit its command";
+"settingsByeDPIDebugOptionDesc" = "Debug a MuseDPI strategy and edit its command";
 "settingsDomainsListOption" = "Domains list";
-"settingsDomainsListOptionDesc" = "Create, update, or delete domains for PalkaDPI testing and filtering";
+"settingsDomainsListOptionDesc" = "Create, update, or delete domains for MuseDPI testing and filtering";
 "settingsStrategiesListOption" = "Strategies list";
-"settingsStrategiesListOptionDesc" = "Create, update, or delete expert PalkaDPI strategies";
+"settingsStrategiesListOptionDesc" = "Create, update, or delete expert MuseDPI strategies";
 
 "settingsByeDPIStrategyTestDelay" = "Delay between check (secs)";
 "settingsByeDPIStrategyTestDelayDesc" = "More delay improve check stability";
@@ -207,7 +208,7 @@
 "settingsByeDPIStrategyTestDomainsName" = "Strategy name";
 "settingsByeDPIStrategyTestDomainsHint" = "One cmd args set at line";
 
-"settingsByeDPIProxySection" = "PalkaDPI local SOCKS proxy";
+"settingsByeDPIProxySection" = "MuseDPI local SOCKS proxy";
 "settingsByeDPIProxyIpAddr" = "IP address";
 "settingsByeDPIProxyPort" = "Port";
 "settingsByeDPIProxyBufSizeShort" = "Buffer size (bytes)";
@@ -218,8 +219,8 @@
 "settingsAboutAppVersionCode" = "App version";
 "settingsAboutByeDPIVersion" = "Embedded engine version";
 
-"byeDPICmdEditorTitle" = "PalkaDPI strategy editor";
-"byeDPICmdEditorHistory" = "PalkaDPI strategy history";
+"byeDPICmdEditorTitle" = "MuseDPI strategy editor";
+"byeDPICmdEditorHistory" = "MuseDPI strategy history";
 "byeDPICmdEditorHistorySelectedItem" = "Selected";
 
 "byeDPITestNavTitle" = "Strategy checker";
@@ -236,10 +237,10 @@
 
 "byeDPITestAnalyzerNavTitle" = "Strategy Analyzer";
 "byeDPITestAnalyzerHint" = "Tip: To better strategy determine, select as many domain lists you need to access as possible, as well as more strategies";
-"byeDPITestAnalyzerFormatHint" = "The analyzer builds a PalkaDPI launch command using the following blocks";
-"byeDPITestAnalyzerFormatInfo1" = "Exclusions block — second-level domains that the PalkaDPI strategy will not modify";
+"byeDPITestAnalyzerFormatHint" = "The analyzer builds a MuseDPI launch command using the following blocks";
+"byeDPITestAnalyzerFormatInfo1" = "Exclusions block — second-level domains that the MuseDPI strategy will not modify";
 "byeDPITestAnalyzerFormatInfo2" = "Domain-specific strategies block - SLDs 'White lists', each of which has its own optimal strategy selected";
-"byeDPITestAnalyzerFormatInfo3" = "Universal PalkaDPI block — the best tested strategy for all remaining domains";
+"byeDPITestAnalyzerFormatInfo3" = "Universal MuseDPI block — the best tested strategy for all remaining domains";
 "byeDPITestAnalyzerFormatInfo4" = "When determining a strategy, each block is optional: you can set only a universal strategy, or only black and white lists, etc.";
 "byeDPITestAnalyzerUseDnsBypassSwitch" = "Exclude DNS traffic (port 53)";
 "byeDPITestAnalyzerUseDomainBypassSwitch" = "Use domain exclusions";

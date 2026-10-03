@@ -6,8 +6,8 @@ import SwByeDPI
 ///Start network extension VPN (ByeDPI SOCKS to TUN) shortcut
 struct StartByeDPIVPNIntent: AppIntent {
     
-    static let title = LocalizedStringResource("appIntentStartByeDPIVPNTitle", defaultValue: "Start PalkaDPI", table: "AppIntent")
-    static let description = IntentDescription(LocalizedStringResource("appIntentStartByeDPIVPNDesc", defaultValue: "Starts PalkaDPI and its local packet tunnel", table: "AppIntent"))
+    static let title = LocalizedStringResource("appIntentStartByeDPIVPNTitle", defaultValue: "Start MuseDPI", table: "AppIntent")
+    static let description = IntentDescription(LocalizedStringResource("appIntentStartByeDPIVPNDesc", defaultValue: "Starts MuseDPI and its local packet tunnel", table: "AppIntent"))
     
     func perform() async throws -> some IntentResult & ReturnsValue<Bool> {
         if (UserDefaultsAppProperties.byeDPIVPNRunning) {

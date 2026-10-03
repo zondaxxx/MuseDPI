@@ -33,10 +33,10 @@ private struct PalkaWidgetProvider: TimelineProvider {
         let appGroup = Bundle.main.object(forInfoDictionaryKey: "PalkaAppGroupIdentifier") as? String
         let defaults = appGroup.flatMap { UserDefaults(suiteName: $0) } ?? .standard
         let isRunning = defaults.bool(forKey: "byedpiVPNRunning")
-        let strategyName = defaults.string(forKey: "activeStrategyName") ?? "PalkaDPI"
+        let strategyName = defaults.string(forKey: "activeStrategyName") ?? "MuseDPI"
         var available = 0
         var checked = 0
-        if let data = defaults.data(forKey: "PalkaDPI.lastDiagnostics.v1"),
+        if let data = defaults.data(forKey: "MuseDPI.lastDiagnostics.v1"),
            let objects = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
             checked = objects.count
             available = objects.filter {
@@ -66,7 +66,7 @@ private struct PalkaWidgetView: View {
             Color(red: 0.025, green: 0.025, blue: 0.045)
             VStack(alignment: .leading, spacing: 9) {
                 HStack {
-                    Text("PalkaDPI")
+                    Text("MuseDPI")
                         .font(.system(size: 16, weight: .heavy))
                     Spacer()
                     Circle()
@@ -114,7 +114,7 @@ struct PalkaStatusWidget: Widget {
         StaticConfiguration(kind: kind, provider: PalkaWidgetProvider()) { entry in
             PalkaWidgetView(entry: entry)
         }
-        .configurationDisplayName("PalkaDPI")
+        .configurationDisplayName("MuseDPI")
         .description("Connection, strategy, and service availability")
         .supportedFamilies([.systemSmall, .systemMedium])
     }

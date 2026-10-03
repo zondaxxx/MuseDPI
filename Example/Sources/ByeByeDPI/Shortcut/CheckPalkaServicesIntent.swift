@@ -5,7 +5,7 @@ import Foundation
 struct CheckPalkaServicesIntent: AppIntent {
     static let title = LocalizedStringResource(
         "appIntentCheckServicesTitle",
-        defaultValue: "Check PalkaDPI services",
+        defaultValue: "Check MuseDPI services",
         table: "AppIntent"
     )
     static let description = IntentDescription(LocalizedStringResource(
@@ -40,9 +40,9 @@ struct CheckPalkaServicesIntent: AppIntent {
 
         let summary: String
         if unavailable.isEmpty {
-            summary = "PalkaDPI: " + available.joined(separator: ", ") + " — OK"
+            summary = "MuseDPI: " + available.joined(separator: ", ") + " — OK"
         } else if available.isEmpty {
-            summary = "PalkaDPI: no response from " + unavailable.joined(separator: ", ")
+            summary = "MuseDPI: no response from " + unavailable.joined(separator: ", ")
         } else {
             summary = "Available: " + available.joined(separator: ", ")
                 + ". No response: " + unavailable.joined(separator: ", ")
@@ -57,13 +57,13 @@ struct PalkaDPIAppShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: StartByeDPIVPNIntent(),
             phrases: ["Start \(.applicationName)", "Connect \(.applicationName)"],
-            shortTitle: "Connect PalkaDPI",
+            shortTitle: "Connect MuseDPI",
             systemImageName: "power"
         )
         AppShortcut(
             intent: StopByeDPIVPNIntent(),
             phrases: ["Stop \(.applicationName)", "Disconnect \(.applicationName)"],
-            shortTitle: "Disconnect PalkaDPI",
+            shortTitle: "Disconnect MuseDPI",
             systemImageName: "stop.circle"
         )
         AppShortcut(

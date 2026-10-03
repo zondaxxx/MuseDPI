@@ -452,7 +452,7 @@ misc:
         socketAddress.sin_port = in_port_t(port).bigEndian
         guard inet_pton(AF_INET, address, &socketAddress.sin_addr) == 1 else {
             return NSError(
-                domain: "PalkaDPI.Tunnel",
+                domain: "MuseDPI.Tunnel",
                 code: 2001,
                 userInfo: [NSLocalizedDescriptionKey: "Invalid local SOCKS address: \(address)"]
             )
@@ -465,7 +465,7 @@ misc:
         }
         guard connectResult == 0 else {
             return NSError(
-                domain: "PalkaDPI.Tunnel",
+                domain: "MuseDPI.Tunnel",
                 code: 2002,
                 userInfo: [NSLocalizedDescriptionKey: "ByeDPI SOCKS listener is unreachable (errno \(errno))"]
             )
@@ -477,7 +477,7 @@ misc:
         }
         guard sent == greeting.count else {
             return NSError(
-                domain: "PalkaDPI.Tunnel",
+                domain: "MuseDPI.Tunnel",
                 code: 2003,
                 userInfo: [NSLocalizedDescriptionKey: "ByeDPI rejected the SOCKS greeting"]
             )
@@ -489,7 +489,7 @@ misc:
         }
         guard received == 2, response == [0x05, 0x00] else {
             return NSError(
-                domain: "PalkaDPI.Tunnel",
+                domain: "MuseDPI.Tunnel",
                 code: 2004,
                 userInfo: [NSLocalizedDescriptionKey: "ByeDPI SOCKS handshake failed"]
             )

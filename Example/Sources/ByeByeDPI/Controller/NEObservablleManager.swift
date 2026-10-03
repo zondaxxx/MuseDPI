@@ -71,7 +71,7 @@ class NEObservableManager: ObservableObject {
         runtimeLogs = [PalkaTunnelLogEntry(
             timestamp: Date().timeIntervalSince1970,
             level: "info",
-            message: "PalkaDPI interface ready"
+            message: "MuseDPI interface ready"
         )]
         _cfNotificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
         _startVpnObserver = nil
@@ -203,7 +203,7 @@ class NEObservableManager: ObservableObject {
             let firstTimeVpnSet = manager.protocolConfiguration == nil
             let startTunnelOptions = NEUtil.generateConnectionParamsFromAppUserDefaults()
             manager.isEnabled = true
-            manager.localizedDescription = "PalkaDPI"
+            manager.localizedDescription = "MuseDPI"
             let vpnProtocol = NETunnelProviderProtocol()
             vpnProtocol.providerConfiguration = startTunnelOptions
             vpnProtocol.serverAddress = UserDefaultsAppProperties.byeDPIListenIp
@@ -456,7 +456,7 @@ class NEObservableManager: ObservableObject {
                 completion(
                     false,
                     NSError(
-                        domain: "PalkaDPI.VPN",
+                        domain: "MuseDPI.VPN",
                         code: shouldBeConnected ? 1001 : 1002,
                         userInfo: [
                             NSLocalizedDescriptionKey:

@@ -8,24 +8,24 @@
 import SwiftUI
 
 enum PalkaDesign {
-    static let background = Color(red: 0.02, green: 0.02, blue: 0.031)
-    static let surface = Color.white.opacity(0.05)
-    static let elevatedSurface = Color.white.opacity(0.09)
+    static let background = Color(red: 0.025, green: 0.075, blue: 0.11)
+    static let surface = Color(red: 0.07, green: 0.14, blue: 0.19)
+    static let elevatedSurface = Color(red: 0.10, green: 0.20, blue: 0.25)
 
     static let textPrimary = Color.white.opacity(0.96)
     static let textSecondary = Color.white.opacity(0.68)
-    static let textMuted = Color.white.opacity(0.43)
+    static let textMuted = Color.white.opacity(0.62)
     static let textDim = Color.white.opacity(0.22)
 
     static let border = Color.white.opacity(0.10)
     static let borderStrong = Color.white.opacity(0.15)
-    static let success = Color(red: 0.13, green: 0.77, blue: 0.37)
-    static let successText = Color(red: 0.66, green: 0.94, blue: 0.75)
+    static let success = Color(red: 0.30, green: 0.77, blue: 0.76)
+    static let successText = Color(red: 0.66, green: 0.91, blue: 0.88)
     static let errorText = Color(red: 0.97, green: 0.51, blue: 0.51)
 
-    static let screenPadding: CGFloat = 16
-    static let sectionSpacing: CGFloat = 24
-    static let cardRadius: CGFloat = 20
+    static let screenPadding: CGFloat = 20
+    static let sectionSpacing: CGFloat = 28
+    static let cardRadius: CGFloat = 24
 }
 
 func palkaLocalized(_ key: String) -> String {
@@ -35,18 +35,11 @@ func palkaLocalized(_ key: String) -> String {
 private struct PalkaGridShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        var x = rect.minX
-        while x <= rect.maxX {
-            path.move(to: CGPoint(x: x, y: rect.minY))
-            path.addLine(to: CGPoint(x: x, y: rect.maxY))
-            x += 44
-        }
-
-        var y = rect.minY
+        var y = rect.height * 0.65
         while y <= rect.maxY {
             path.move(to: CGPoint(x: rect.minX, y: y))
-            path.addLine(to: CGPoint(x: rect.maxX, y: y))
-            y += 44
+            path.addCurve(to: CGPoint(x: rect.maxX, y: y), control1: CGPoint(x: rect.width * 0.35, y: y - 30), control2: CGPoint(x: rect.width * 0.65, y: y + 30))
+            y += 28
         }
         return path
     }
@@ -59,12 +52,12 @@ struct PalkaBackground: View {
                 PalkaDesign.background
 
                 PalkaGridShape()
-                    .stroke(Color.white.opacity(0.035), lineWidth: 0.5)
+                    .stroke(PalkaDesign.success.opacity(0.08), lineWidth: 0.7)
 
                 RadialGradient(
                     gradient: Gradient(colors: [
                         Color.clear,
-                        Color.black.opacity(0.72),
+                        PalkaDesign.background.opacity(0.32),
                     ]),
                     center: .center,
                     startRadius: 0,
@@ -129,9 +122,11 @@ extension View {
 }
 
 struct PalkaPressButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.975 : 1)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.975 : 1)
             .opacity(configuration.isPressed ? 0.82 : 1)
             .animation(.timingCurve(0.32, 0.72, 0, 1, duration: 0.15))
     }
@@ -139,6 +134,7 @@ struct PalkaPressButtonStyle: ButtonStyle {
 
 struct PalkaPrimaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -159,7 +155,7 @@ struct PalkaPrimaryButtonStyle: ButtonStyle {
                     .stroke(Color.white.opacity(0.90), lineWidth: 0.5)
             )
             .shadow(color: Color.white.opacity(configuration.isPressed ? 0.18 : 0.10), radius: configuration.isPressed ? 14 : 10, y: 4)
-            .scaleEffect(configuration.isPressed && isEnabled ? 0.98 : 1)
+            .scaleEffect(configuration.isPressed && isEnabled && !reduceMotion ? 0.98 : 1)
             .opacity(isEnabled ? 1 : 0.70)
             .animation(.timingCurve(0.32, 0.72, 0, 1, duration: 0.15))
     }

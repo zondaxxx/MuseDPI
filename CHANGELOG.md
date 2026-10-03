@@ -1,6 +1,19 @@
 # CHANGELOG
 
-## PalkaDPI for Android 0.5.0
+## MuseDPI rebrand — 03.10.2026
+
+- Compact connection cards bring service responses closer to the first screen on both platforms.
+- Home-screen HTTP checks skip bulk downloads; full diagnostics and strategy verification retain the 256 KB transfer test.
+- Service descriptions reflect the selected services instead of always claiming Discord and YouTube are covered.
+- iOS settings use proportional text, and primary buttons respect Reduce Motion.
+- Existing GitHub release titles now distinguish MuseDPI iOS and Android without changing tags or historical binaries.
+- iOS and Android now display MuseDPI, with a wave-shaped m, new icons and a marine palette.
+- Repository renamed to zondaxxx/MuseDPI; catalog links and build artifact names updated.
+- Preserve application IDs, saved settings and signed catalog compatibility.
+- Android catalog downloads are bounded while reading, preventing oversized responses from exhausting memory.
+- iOS download instructions no longer use the shared latest-release link, which can point to Android.
+
+## MuseDPI for Android 0.5.0
 
 ### 23.09.2026
 
@@ -11,10 +24,10 @@
 - Protected services with custom domains, catalog with search/favorites/rollback, favorites and history with reliability, diagnostics (DNS/TLS/HTTP/256 KB) with a private JSON report
 - Networks: Wi-Fi/mobile strategy profiles that switch automatically on network change, autostart on boot, connect on launch, Android always-on VPN and battery shortcuts, smart recovery and QUIC blocking
 - Android only: split tunnelling by app, VPN or SOCKS5-proxy mode, quick settings tile; the classic ByeByeDPI screen and every engine parameter stay under expert settings (now dark themed)
-- PalkaDPI launcher icon, TV banner and the in-app icon replace the upstream ones
+- MuseDPI launcher icon, TV banner and the in-app icon replace the upstream ones
 - The signed catalog loads in release builds again (in 0.1.0 R8 stripped the Gson models and the catalog failed with "unsupported schema 0")
 
-## PalkaDPI 0.4.7
+## MuseDPI 0.4.7
 
 ### 14.09.2026
 
@@ -24,7 +37,7 @@
 - Pre-check shows live progress per strategy; a run log with timestamps is shown on the automation screen
 - When none of the shortlisted strategies works through the tunnel, the remaining catalog strategies are tested instead of giving up
 
-## PalkaDPI 0.4.6
+## MuseDPI 0.4.6
 
 ### 14.09.2026
 
@@ -35,13 +48,13 @@
 - Smart recovery probes run every two minutes and only while the app is in the foreground
 - Core changes now live in `Sources/ByeDPIC/patches/` and `update_byedpi.sh` re-applies them, so refreshing upstream byedpi no longer silently drops the hex payload support
 
-## PalkaDPI 0.4.5 / 0.4.4
+## MuseDPI 0.4.5 / 0.4.4
 
 ### 22.08.2026
 
 - Bundle branding, tunnel transport verification, runtime logs and bounded strategy tests (see git history)
 
-## PalkaDPI 0.4.3
+## MuseDPI 0.4.3
 
 ### 22.08.2026
 
@@ -50,11 +63,11 @@
 - Added inline hex payload support to the embedded Apple ByeDPI build
 - Rebuilt the signed catalog as six distinct iOS strategies and revoked all ineffective v1/v2 profiles
 - Migrated installed v1/v2 configurations to a safe native multisplit fallback
-- Replaced the inherited app icon with the PalkaDPI packet-split mark
-- Renamed user-facing engine, proxy, editor, tunnel, and analyzer labels to PalkaDPI
+- Replaced the inherited app icon with the MuseDPI packet-split mark
+- Renamed user-facing engine, proxy, editor, tunnel, and analyzer labels to MuseDPI
 - Added exact Flowseal/bol-van payload attribution, checksums, and MIT license text
 
-## PalkaDPI 0.4.2
+## MuseDPI 0.4.2
 
 ### 22.08.2026
 
@@ -64,7 +77,7 @@
 - Added explicit start/stop timeouts and surfaced lifecycle errors
 - Fixed manual and network-profile reconnection flows to wait for actual VPN state transitions
 
-## PalkaDPI 0.4.1
+## MuseDPI 0.4.1
 
 ### 22.08.2026
 
@@ -74,7 +87,7 @@
 - Reject HTTP error responses and cross-host block-page redirects
 - Fixed the Telegram diagnostic endpoint
 
-## PalkaDPI 0.4.0
+## MuseDPI 0.4.0
 
 ### 22.08.2026
 

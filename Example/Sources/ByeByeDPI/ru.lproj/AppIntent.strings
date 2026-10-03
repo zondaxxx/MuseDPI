@@ -1,9 +1,9 @@
-"appIntentStartByeDPIVPNTitle" = "Включить PalkaDPI";
-"appIntentStartByeDPIVPNDesc" = "Включает локальный туннель PalkaDPI";
-"appIntentStopByeDPIVPNTitle" = "Выключить PalkaDPI";
-"appIntentStopByeDPIVPNDesc" = "Останавливает локальный туннель PalkaDPI";
-"appIntentToggleByeDPIVPNTitle" = "Переключить PalkaDPI";
-"appIntentToggleByeDPIVPNDesc" = "Переключает состояние туннеля PalkaDPI";
+"appIntentStartByeDPIVPNTitle" = "Включить MuseDPI";
+"appIntentStartByeDPIVPNDesc" = "Включает локальный туннель MuseDPI";
+"appIntentStopByeDPIVPNTitle" = "Выключить MuseDPI";
+"appIntentStopByeDPIVPNDesc" = "Останавливает локальный туннель MuseDPI";
+"appIntentToggleByeDPIVPNTitle" = "Переключить MuseDPI";
+"appIntentToggleByeDPIVPNDesc" = "Переключает состояние туннеля MuseDPI";
 "appIntentToggleByeDPIVPRunngingParamTitle" = "Включить";
-"appIntentCheckServicesTitle" = "Проверить сервисы PalkaDPI";
+"appIntentCheckServicesTitle" = "Проверить сервисы MuseDPI";
 "appIntentCheckServicesDesc" = "Проверяет выбранные сервисы через текущее подключение";

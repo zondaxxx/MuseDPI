@@ -1,14 +1,15 @@
-"palkaTitle" = "PalkaDPI";
+"palkaTitle" = "MuseDPI";
+"palkaLastChecked" = "Последняя проверка:";
 "palkaSubtitle" = "Локальный обход DPI без внешнего VPN";
 "palkaPreset" = "Пресет: %@";
 "palkaApplyPreset" = "Вернуть пресет Discord + YouTube";
 "palkaApplyPresetDescription" = "Сбросить только DPI-стратегию; DNS и адрес прокси не изменятся";
-"palkaStatusActive" = "ЗАЩИТА АКТИВНА";
+"palkaStatusActive" = "ЛОКАЛЬНЫЙ ТУННЕЛЬ АКТИВЕН";
 "palkaStatusInactive" = "ГОТОВО К ПОДКЛЮЧЕНИЮ";
 "palkaProtectionOnTitle" = "Обход работает";
-"palkaProtectionOffTitle" = "Открой заблокированные сервисы";
-"palkaProtectionOnDescription" = "Трафик Discord и YouTube обрабатывается локально на этом устройстве.";
-"palkaProtectionOffDescription" = "Запусти локальный туннель для обхода DPI без внешнего VPN-сервера.";
+"palkaProtectionOffTitle" = "Свободнее на связи";
+"palkaProtectionOnDescription" = "Трафик выбранных сервисов обрабатывается на устройстве. Доступность проверяется ниже.";
+"palkaProtectionOffDescription" = "Выбери сервисы и подключись. Всё работает на твоём устройстве.";
 "palkaConnect" = "Подключить";
 "palkaDisconnect" = "Отключить";
 "palkaPleaseWait" = "Подождите";
@@ -37,14 +38,14 @@
 "palkaCurrentStrategyFormat" = "Сейчас: %@";
 "palkaAdvancedSection" = "Для опытных пользователей";
 "palkaAdvancedSettings" = "Экспертные настройки";
-"palkaAdvancedSettingsDescription" = "DNS, параметры прокси, списки доменов, тестирование и команды ядра PalkaDPI";
+"palkaAdvancedSettingsDescription" = "DNS, параметры прокси, списки доменов, тестирование и команды ядра MuseDPI";
 "palkaExpertTitle" = "Экспертные параметры";
 "palkaExpertDescription" = "Эти настройки могут нарушить подключение. Меняй их, только если понимаешь назначение параметра.";
 "palkaAcknowledgements" = "Исходники и благодарности";
 "palkaAcknowledgementsDescription" = "Upstream-проекты, зависимости, источники идей и лицензии";
 "palkaCatalogTitle" = "Стратегии из интернета";
 "palkaCatalogHeading" = "Найди рабочий профиль";
-"palkaCatalogInternetSource" = "Безопасно загружается из репозитория PalkaDPI";
+"palkaCatalogInternetSource" = "Безопасно загружается из репозитория MuseDPI";
 "palkaCatalogUpdatedFormat" = "Онлайн-каталог · обновлён %@";
 "palkaCatalogCachedFormat" = "Сохранённый каталог · обновлён %@";
 "palkaCatalogSearchPlaceholder" = "Поиск по сервису или стратегии";
@@ -56,7 +57,7 @@
 "palkaCatalogApplied" = "Активна";
 "palkaCatalogInvalidResponse" = "Каталог вернул некорректные данные";
 "palkaCatalogOfflineCache" = "Онлайн-каталог недоступен — показана последняя сохранённая версия";
-"palkaCatalogStopFirst" = "Отключи PalkaDPI перед сменой активной стратегии";
+"palkaCatalogStopFirst" = "Отключи MuseDPI перед сменой активной стратегии";
 "palkaCustomStrategy" = "Своя стратегия";
 "palkaTestedStrategy" = "Результат теста";
 "palkaAnalyzedStrategy" = "Результат подбора";
@@ -64,8 +65,8 @@
 "palkaCatalogRollback" = "Вернуть предыдущий проверенный каталог";
 "palkaCatalogFavorite" = "Добавить или убрать из избранного";
 "palkaAutoTitle" = "Автоматическая настройка";
-"palkaAutoHeading" = "Пусть PalkaDPI выберет сам";
-"palkaAutoDescription" = "PalkaDPI проверит подписанные стратегии на выбранных сервисах, выберет самую надёжную, сохранит её для этого типа сети и подключится.";
+"palkaAutoHeading" = "Пусть MuseDPI выберет сам";
+"palkaAutoDescription" = "MuseDPI проверит подписанные стратегии на выбранных сервисах, выберет самую надёжную, сохранит её для этого типа сети и подключится.";
 "palkaAutoStart" = "Подобрать и подключить";
 "palkaAutoCancel" = "Остановить проверку";
 "palkaAutoStoppingVPN" = "Отключаем предыдущий системный VPN…";
@@ -95,8 +96,8 @@
 "palkaAutoHomeDescription" = "Автоматически найти лучшую рабочую стратегию";
 "palkaServicesTitle" = "Защищаемые сервисы";
 "palkaServicesHeading" = "Выбери, что должно работать";
-"palkaServicesDescription" = "PalkaDPI сам соберёт список целевых доменов. Должен остаться выбран хотя бы один сервис.";
-"palkaServicesStopFirst" = "Отключи PalkaDPI перед изменением списка сервисов";
+"palkaServicesDescription" = "MuseDPI сам соберёт список целевых доменов. Должен остаться выбран хотя бы один сервис.";
+"palkaServicesStopFirst" = "Отключи MuseDPI перед изменением списка сервисов";
 "palkaDiagnosticsTitle" = "Диагностика подключения";
 "palkaDiagnosticsHeading" = "Пойми, где проблема";
 "palkaDiagnosticsDescription" = "Проверяет DNS, TLS, HTTP-отклик и стабильность, не читая содержимое трафика и историю браузера.";
@@ -112,7 +113,7 @@
 "palkaNetworkProfilesSettingsDescription" = "On Demand, профили Wi‑Fi/мобильной сети и восстановление";
 "palkaOnDemandSection" = "VPN On Demand";
 "palkaOnDemandEnabled" = "Подключаться автоматически";
-"palkaOnDemandDescription" = "Разрешить iOS запускать PalkaDPI при появлении сетевого трафика";
+"palkaOnDemandDescription" = "Разрешить iOS запускать MuseDPI при появлении сетевого трафика";
 "palkaOnDemandWiFi" = "Автоматически подключаться по Wi‑Fi";
 "palkaOnDemandCellular" = "Автоматически подключаться по мобильной сети";
 "palkaOnDemandSave" = "Сохранить правила On Demand";
@@ -149,8 +150,8 @@
 "palkaServicePingUnavailable" = "Нет ответа";
 "homeVpnStateOff" = "Обход выключен";
 "homeVpnStateOn" = "Обход включен";
-"homeSettingsAccessHint" = "Отключите PalkaDPI для перехода в настройки";
-"homeStartByeDPIErrTitle" = "Ошибка запуска PalkaDPI";
+"homeSettingsAccessHint" = "Отключите MuseDPI для перехода в настройки";
+"homeStartByeDPIErrTitle" = "Ошибка запуска MuseDPI";
 "homeStartByeDPIErrUnknownMsg" = "Неизвестная ошибка";
 
 "settingsGeneralSection" = "Общее";
@@ -169,21 +170,21 @@
 "settingsGeneralExportSettingsOption" = "Экспортировать настройки";
 "settingsGeneralExportSettingsOptionDesc" = "Экспорт настроек в виде файла (Android BBD формат)";
 
-"settingsByeDPISection" = "Ядро PalkaDPI";
+"settingsByeDPISection" = "Ядро MuseDPI";
 "settingsByeDPIArgsOption" = "Команда стратегии";
-"settingsByeDPIArgsOptionDesc" = "Редактор аргументов ядра PalkaDPI";
-"settingsByeDPIArgsFieldTitle" = "Аргументы ядра PalkaDPI";
+"settingsByeDPIArgsOptionDesc" = "Редактор аргументов ядра MuseDPI";
+"settingsByeDPIArgsFieldTitle" = "Аргументы ядра MuseDPI";
 "settingsByeDPIArgsFieldNoValuePlaceholder" = "Стратегия не указана";
 "settingsByeDPIStrategyTestOption" = "Проверка стратегий";
-"settingsByeDPIStrategyTestOptionDesc" = "Расширенная проверка стратегий PalkaDPI";
+"settingsByeDPIStrategyTestOptionDesc" = "Расширенная проверка стратегий MuseDPI";
 "settingsByeDPITestAnalyzerOption" = "Подбор стратегии";
-"settingsByeDPITestAnalyzerOptionDesc" = "Сборка стратегии PalkaDPI по результатам тестирования";
+"settingsByeDPITestAnalyzerOptionDesc" = "Сборка стратегии MuseDPI по результатам тестирования";
 "settingsByeDPIDebugOption" = "Отладка стратегии";
-"settingsByeDPIDebugOptionDesc" = "Отладка стратегии PalkaDPI с возможностью изменения команд";
+"settingsByeDPIDebugOptionDesc" = "Отладка стратегии MuseDPI с возможностью изменения команд";
 "settingsDomainsListOption" = "Списки доменов";
-"settingsDomainsListOptionDesc" = "Создавайте, изменяйте или удаляйте домены для тестирования и фильтрации стратегий PalkaDPI";
+"settingsDomainsListOptionDesc" = "Создавайте, изменяйте или удаляйте домены для тестирования и фильтрации стратегий MuseDPI";
 "settingsStrategiesListOption" = "Списки стратегий";
-"settingsStrategiesListOptionDesc" = "Создавайте, изменяйте или удаляйте экспертные стратегии PalkaDPI";
+"settingsStrategiesListOptionDesc" = "Создавайте, изменяйте или удаляйте экспертные стратегии MuseDPI";
 
 "settingsByeDPIStrategyTestDelay" = "Ождидание между проверками (сек)";
 "settingsByeDPIStrategyTestDelayDesc" = "Увеличение значения ожидания улучшуает достоверность результатов проверки";
@@ -208,7 +209,7 @@
 "settingsByeDPIStrategyTestDomainsName" = "Имя стратегии";
 "settingsByeDPIStrategyTestDomainsHint" = "Одна стратегия на линию";
 
-"settingsByeDPIProxySection" = "Локальный SOCKS-прокси PalkaDPI";
+"settingsByeDPIProxySection" = "Локальный SOCKS-прокси MuseDPI";
 "settingsByeDPIProxyIpAddr" = "Прослушиваемый IP адрес";
 "settingsByeDPIProxyPort" = "Порт";
 "settingsByeDPIProxyBufSizeShort" = "Размер буфера (байты)";
@@ -237,10 +238,10 @@
 
 "byeDPITestAnalyzerNavTitle" = "Подбор стратегии";
 "byeDPITestAnalyzerHint" = "Подсказка: для более лучшего подбора стратегии выберите как можно больше списков доменов, к которым необходимо получить доступ, а также больше стратегий";
-"byeDPITestAnalyzerFormatHint" = "Анализатор построит команду запуска PalkaDPI, учитывая следующие аспекты";
-"byeDPITestAnalyzerFormatInfo1" = "Блок исключений — список доменов 2-го уровня, к которым стратегия PalkaDPI применяться не будет";
+"byeDPITestAnalyzerFormatHint" = "Анализатор построит команду запуска MuseDPI, учитывая следующие аспекты";
+"byeDPITestAnalyzerFormatInfo1" = "Блок исключений — список доменов 2-го уровня, к которым стратегия MuseDPI применяться не будет";
 "byeDPITestAnalyzerFormatInfo2" = "Domain-specific блок стратегий - 'Белые списки' доменов 2-го уровня, к каждому из которых подобрана своя наиболее оптимальная стратегия";
-"byeDPITestAnalyzerFormatInfo3" = "Блок универсальной стратегии PalkaDPI — лучший по итогам тестов вариант для остальных доменов";
+"byeDPITestAnalyzerFormatInfo3" = "Блок универсальной стратегии MuseDPI — лучший по итогам тестов вариант для остальных доменов";
 "byeDPITestAnalyzerFormatInfo4" = "При подборе стратегии каждый блок является опциональным: можно задать только универсальную стратегию, можно - только черные и белые списки итд";
 "byeDPITestAnalyzerUseDnsBypassSwitch" = "Не применять стратегию к DNS (порт 53)";
 "byeDPITestAnalyzerUseDomainBypassSwitch" = "Использовать исключения доменов";

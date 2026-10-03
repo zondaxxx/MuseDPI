@@ -160,7 +160,17 @@ object PalkaCatalog {
         connection.setRequestProperty("Cache-Control", "no-cache")
         try {
             if (connection.responseCode != 200) throw CatalogException("HTTP ${connection.responseCode}")
-            val bytes = connection.inputStream.use { it.readBytes() }
+            val bytes = connection.inputStream.use { input ->
+                val output = java.io.ByteArrayOutputStream()
+                val buffer = ByteArray(8192)
+                while (true) {
+                    val count = input.read(buffer)
+                    if (count == -1) break
+                    if (count > limit - output.size()) throw CatalogException("response too large")
+                    output.write(buffer, 0, count)
+                }
+                output.toByteArray()
+            }
             if (bytes.size > limit) throw CatalogException("response too large: ${bytes.size}")
             return bytes
         } finally {

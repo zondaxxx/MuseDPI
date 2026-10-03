@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>PalkaDPI Tunnel</string>
+	<string>MuseDPI Tunnel</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -11,11 +11,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>PalkaDPI Tunnel</string>
+	<string>MuseDPI Tunnel</string>
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>PalkaDPI uses a local proxy to process traffic on this device.</string>
+	<string>MuseDPI uses a local proxy to process traffic on this device.</string>
 	<key>PalkaAppGroupIdentifier</key>
 	<string>$(PALKA_APP_GROUP)</string>
 	<key>CFBundleShortVersionString</key>

@@ -90,7 +90,7 @@ fun HomeScreen() {
     LaunchedEffect(running) {
         PalkaDiagnostics.ensureIdle()
         delay(if (running) 1200 else 300)
-        PalkaDiagnostics.refresh { PalkaAutomation.evaluateRecovery(it) }
+        PalkaDiagnostics.refresh(includeBulk = false) { PalkaAutomation.evaluateRecovery(it) }
     }
     // Smart recovery check every two minutes while connected and on screen (as on iOS,
     // never in the background: probes cost battery and a paused app cannot act on them).
@@ -174,7 +174,7 @@ private fun Header(running: Boolean, onSettings: () -> Unit) {
 private fun ConnectionCard(running: Boolean, inFlight: Boolean, onToggle: () -> Unit) {
     Column(
         Modifier.fillMaxWidth().palkaCard(24.dp, selected = running).padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(22.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             PalkaStatusDot(running)
@@ -188,7 +188,7 @@ private fun ConnectionCard(running: Boolean, inFlight: Boolean, onToggle: () -> 
         Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
             Text(
                 stringResource(if (running) R.string.palka_protection_on_title else R.string.palka_protection_off_title),
-                style = palkaText(30.sp, FontWeight.Black, tracking = (-1.0).sp, lineHeight = 34.sp)
+                style = palkaText(26.sp, FontWeight.Bold, tracking = (-0.5).sp, lineHeight = 30.sp)
             )
             Text(
                 stringResource(if (running) R.string.palka_protection_on_description else R.string.palka_protection_off_description),
@@ -306,7 +306,7 @@ private fun ServiceLatencyCard(onDetails: () -> Unit) {
                 Text(stringResource(R.string.palka_service_ping_description), style = palkaText(11.sp, color = PalkaDesign.textMuted))
             }
             PalkaCircleButton(
-                onClick = { PalkaDiagnostics.refresh { PalkaAutomation.evaluateRecovery(it) } },
+                onClick = { PalkaDiagnostics.refresh(includeBulk = false) { PalkaAutomation.evaluateRecovery(it) } },
                 enabled = !PalkaDiagnostics.isRefreshing && !PalkaAutomation.isRunning,
                 contentDescription = stringResource(R.string.palka_service_ping_refresh)
             ) {
@@ -315,6 +315,14 @@ private fun ServiceLatencyCard(onDetails: () -> Unit) {
             }
         }
         PalkaDiagnostics.services.forEach { ServiceLatencyRow(it) }
+        PalkaDiagnostics.services.mapNotNull { it.checkedAt }.maxOrNull()?.let { checkedAt ->
+            val time = android.text.format.DateFormat.getTimeFormat(LocalContext.current)
+                .format(java.util.Date(checkedAt))
+            Text(
+                "${stringResource(R.string.palka_last_checked)} $time",
+                style = palkaText(11.sp, color = PalkaDesign.textMuted)
+            )
+        }
         Box(
             Modifier.fillMaxWidth().heightIn(min = 44.dp).palkaPressable(onClick = onDetails),
             contentAlignment = Alignment.Center

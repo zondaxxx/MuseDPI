@@ -7,7 +7,7 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
 
-        <!-- PalkaDPI palette: near-black canvas, white accents (see palka/ui/PalkaDesign.kt) -->
+        <!-- MuseDPI palette: near-black canvas, white accents (see palka/ui/PalkaDesign.kt) -->
         <item name="android:windowBackground">@color/palka_background</item>
         <item name="colorPrimary">#F5F6FA</item>
         <item name="colorOnPrimary">#07070E</item>

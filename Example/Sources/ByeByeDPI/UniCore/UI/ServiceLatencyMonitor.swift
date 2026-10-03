@@ -301,7 +301,7 @@ final class ServiceDiagnosticsMonitor: ObservableObject {
     @Published private(set) var lastCompletedAt: Date?
 
     private let defaults = UserDefaults(suiteName: Constants.APP_GROUP_ID) ?? .standard
-    private let resultKey = "PalkaDPI.lastDiagnostics.v1"
+    private let resultKey = "MuseDPI.lastDiagnostics.v1"
     private var generation = UUID()
     private var probes: [PalkaHTTPProbe] = []
 
@@ -353,7 +353,7 @@ final class ServiceDiagnosticsMonitor: ObservableObject {
 
         let group = DispatchGroup()
         var measurements: [String: [PalkaHTTPProbeMeasurement]] = [:]
-        let measurementQueue = DispatchQueue(label: "PalkaDPI.DiagnosticMeasurements")
+        let measurementQueue = DispatchQueue(label: "MuseDPI.DiagnosticMeasurements")
 
         for service in selected {
             for _ in 0..<safeAttempts {

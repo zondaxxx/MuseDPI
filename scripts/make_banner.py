@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render RepoAssets/palka-banner.png from real device screenshots.
+"""Render RepoAssets/muse-banner.png from real device screenshots.
 
 Usage: python3 scripts/make_banner.py IOS_SCREENSHOT.png ANDROID_SCREENSHOT.png
 
@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 W, H = 2200, 800
-BG = (5, 5, 8, 255)
+BG = (6, 19, 28, 255)
 SF = "/System/Library/Fonts/SFNS.ttf"
 MONO = "/System/Library/Fonts/SFNSMono.ttf"
 
@@ -112,7 +112,7 @@ def main(ios_shot, android_shot):
     img.alpha_composite(dot, (x0 - 28, y0 - 30))
     d.text((x0 + 36, y0 - 16), "LOCAL · PRIVATE · SYSTEM-WIDE", font=font(30, "Semibold"),
            fill=(255, 255, 255, 175), spacing=4)
-    d.text((x0 - 8, y0 + 40), "PalkaDPI", font=font(168, "Heavy"), fill=(248, 248, 252, 255))
+    d.text((x0 - 8, y0 + 40), "MuseDPI", font=font(168, "Regular"), fill=(223, 245, 241, 255))
     d.text((x0, y0 + 250), "DPI bypass for iOS and Android", font=font(46, "Regular"), fill=(255, 255, 255, 178))
     d.text((x0, y0 + 314), "on-device ByeDPI core — no remote VPN server", font=font(36, "Regular"),
            fill=(255, 255, 255, 112))
@@ -133,8 +133,8 @@ def main(ios_shot, android_shot):
     mask = rounded_mask((W, H), 48)
     out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     out.paste(img, (0, 0), mask)
-    out.save(os.path.join(ROOT, "RepoAssets/palka-banner.png"), optimize=True)
-    print("RepoAssets/palka-banner.png", out.size)
+    out.save(os.path.join(ROOT, "RepoAssets/muse-banner.png"), optimize=True)
+    print("RepoAssets/muse-banner.png", out.size)
 
 
 if __name__ == "__main__":

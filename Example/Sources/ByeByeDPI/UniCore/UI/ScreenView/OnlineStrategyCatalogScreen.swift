@@ -99,7 +99,7 @@ final class OnlineStrategyCatalogStore: ObservableObject {
     @Published private(set) var isUsingCache = false
     @Published private(set) var errorText: String? = nil
 
-    private static let cacheKey = "PalkaDPI.onlineStrategyCatalog.v2"
+    private static let cacheKey = "MuseDPI.onlineStrategyCatalog.v2"
     private static let maximumCatalogSize = 512 * 1024
 
     private let defaults = UserDefaults(suiteName: Constants.APP_GROUP_ID) ?? .standard

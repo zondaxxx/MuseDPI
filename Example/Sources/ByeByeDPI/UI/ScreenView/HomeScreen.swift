@@ -82,7 +82,8 @@ struct HomeScreen: View {
         .onAppear {
             diagnosticsMonitor.refresh(
                 serviceIDs: properties.selectedServiceIDs,
-                customDomains: properties.customServiceDomains
+                customDomains: properties.customServiceDomains,
+                includeBulk: false
             ) { results in
                 automationManager.evaluateRecovery(results: results)
             }
@@ -91,7 +92,8 @@ struct HomeScreen: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                 diagnosticsMonitor.refresh(
                     serviceIDs: properties.selectedServiceIDs,
-                    customDomains: properties.customServiceDomains
+                    customDomains: properties.customServiceDomains,
+                    includeBulk: false
                 ) { results in
                     automationManager.evaluateRecovery(results: results)
                 }
@@ -171,7 +173,7 @@ struct HomeScreen: View {
     }
 
     private var connectionCard: some View {
-        VStack(alignment: .leading, spacing: 22) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
                 PalkaStatusDot(isActive: neManager.vpnRunning)
 
@@ -200,8 +202,8 @@ struct HomeScreen: View {
                 Text(neManager.vpnRunning
                      ? palkaLocalized("palkaProtectionOnTitle")
                      : palkaLocalized("palkaProtectionOffTitle"))
-                    .font(.system(size: 30, weight: .heavy))
-                    .tracking(-1.0)
+                    .font(.system(size: 26, weight: .bold))
+                    .tracking(-0.5)
                     .fixedSize(horizontal: false, vertical: true)
 
                 Text(neManager.vpnRunning
@@ -359,7 +361,8 @@ struct HomeScreen: View {
                 Button(action: {
                     diagnosticsMonitor.refresh(
                         serviceIDs: properties.selectedServiceIDs,
-                        customDomains: properties.customServiceDomains
+                        customDomains: properties.customServiceDomains,
+                        includeBulk: false
                     ) { results in
                         automationManager.evaluateRecovery(results: results)
                     }
@@ -385,6 +388,15 @@ struct HomeScreen: View {
 
             ForEach(diagnosticsMonitor.services) { service in
                 serviceLatencyRow(service)
+            }
+
+            if let checkedAt = diagnosticsMonitor.services.compactMap(\.checkedAt).max() {
+                HStack(spacing: 4) {
+                    Text(palkaLocalized("palkaLastChecked"))
+                    Text(checkedAt, style: .time)
+                }
+                .font(.system(size: 11))
+                .foregroundColor(PalkaDesign.textMuted)
             }
 
             NavigationLink(destination: DiagnosticsScreen()) {

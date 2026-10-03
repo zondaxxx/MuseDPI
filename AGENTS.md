@@ -20,7 +20,7 @@ SwByeDPI/
 │   └── ByeByeDPI/             # SwiftUI app (iOS 14+)
 ├── Assets/                     # Built-in domain lists and strategies
 ├── assets_codegen.sh           # Code generation for Assets/*.domains|*.strategies
-├── patches/byedpi/             # PalkaDPI patches re-applied by update_byedpi.sh
+├── patches/byedpi/             # MuseDPI patches re-applied by update_byedpi.sh
 ├── Tests/                      # Unit tests
 ├── Experimental/               # Experimental features
 ├── Package.swift               # Swift Package Manager manifest
