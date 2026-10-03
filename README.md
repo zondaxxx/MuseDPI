@@ -22,13 +22,32 @@
 > Системный VPN нужен только для маршрутизации трафика в локальное ядро.
 
 [Визуальная система MuseDPI](./docs/MUSEDPI-BRAND.md): глубокий морской синий,
-морское стекло, спокойные волны и логотип «m». Старые скриншоты в `RepoAssets/screens/`
-относятся к предыдущему интерфейсу и не показывают текущий дизайн.
+морское стекло, спокойные волны и логотип «m».
+
+## Скриншоты
+
+### Android · главный экран и диагностика
 
 <p align="center">
-  <img src="./RepoAssets/screens/muse-android-home.png" width="280" alt="MuseDPI: новый главный экран Android" />
+  <img src="./RepoAssets/screens/muse-android-home.png" width="280" alt="MuseDPI Android: главный экран с HTTP-откликом Discord и YouTube" />
+  <img src="./RepoAssets/screens/muse-android-diagnostics.png" width="280" alt="MuseDPI Android: реальные результаты DNS, TLS, HTTP и загрузки 256 КБ" />
 </p>
 
+### iPhone · настройки, сервисы и сети
+
+<p align="center">
+  <img src="./RepoAssets/screens/muse-ios-settings.png" width="260" alt="MuseDPI iPhone: быстрые настройки и стратегии" />
+  <img src="./RepoAssets/screens/muse-ios-services.png" width="260" alt="MuseDPI iPhone: выбор защищаемых сервисов" />
+  <img src="./RepoAssets/screens/muse-ios-networks.png" width="260" alt="MuseDPI iPhone: Wi-Fi, мобильная сеть, On Demand и восстановление" />
+</p>
+
+Снимки сделаны в Android Emulator и iPhone 17 Pro Max Simulator.
+На Android показаны **реальные HTTP-измерения**, не демонстрационные значения:
+оба сервиса ответили, полная диагностика выполнила по три успешных запроса
+и проверила загрузку 256 КБ. Эмулятор использует подключение Mac с действующим VPN;
+эти результаты не подтверждают обход DPI в LTE-сети телефона.
+В iPhone Simulator проверка упёрлась в DNS, поэтому здесь показаны настройки,
+а не выдуманные задержки. Старые файлы без префикса `muse-` показывают предыдущий интерфейс.
 
 ## Возможности
 
