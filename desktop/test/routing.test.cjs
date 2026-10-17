@@ -36,7 +36,7 @@ test('native routing applies domains and IP sets without modifying excluded traf
   });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
-  const controller = new Controller(process.env.MUSE_TEST_ENGINE);
+  const controller = new Controller(process.env.MUSE_TEST_ENGINE, { ephemeral: true });
   const config = { ...defaults(), serviceIds: [], customDomains: 'selected.test' };
   const cases = [
     { changes: {}, host: 'selected.test', modified: true },
@@ -66,7 +66,7 @@ test('native game UDP rules affect only selected ports and respect IP exclusions
   receiver.bind(0, '127.0.0.1');
   await once(receiver, 'listening');
   const port = receiver.address().port;
-  const controller = new Controller(process.env.MUSE_TEST_ENGINE);
+  const controller = new Controller(process.env.MUSE_TEST_ENGINE, { ephemeral: true });
   const payload = Buffer.from('musedpi-local-game-test');
   try {
     for (const scenario of [{ match: true, exclude: false }, { match: false, exclude: false }, { match: true, exclude: true }]) {

@@ -18,9 +18,12 @@
 обрабатывает его ядром [ByeDPI](https://github.com/hufrea/byedpi) прямо на телефоне.
 Внешний VPN-сервер не используется.
 
-Для **Windows x64** доступна [MuseDPI Desktop Alpha](https://github.com/zondaxxx/MuseDPI/releases/tag/desktop-v0.1.0-alpha.1):
+Для **Windows x64** доступна [MuseDPI Desktop Alpha 2](https://github.com/zondaxxx/MuseDPI/releases/tag/desktop-v0.1.0-alpha.2):
 локальный SOCKS5 с выбором сервисов, IP-наборами и игровыми TCP/UDP-фильтрами.
+Постоянный порт, отменяемая диагностика и автоподбор в отдельном прокси.
 Desktop пока не создаёт системный туннель — трафик нужно направить в SOCKS5 из приложения.
+При обновлении с первой alpha один раз замените случайный порт в клиенте на **1080**
+или задайте свой. [Инструкция обновления](./desktop/README.md#обновление-с-alpha1).
 
 > MuseDPI не скрывает IP-адрес, не меняет страну и не добавляет VPN-шифрование.
 > Системный VPN нужен только для маршрутизации трафика в локальное ядро.

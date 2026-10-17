@@ -17,7 +17,7 @@
     <symbol id="icon-sliders" viewBox="0 0 24 24"><path d="M3 7h6m4 0h8M3 17h10m4 0h4"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></symbol>
     <symbol id="icon-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .6-1.5 1-1.5 2m0 3h.01"/></symbol>
   </defs></svg>
-  <header class="titlebar"><img src="mark.svg" alt="" width="28" height="28"><span class="brand">MuseDPI</span><span class="version">Desktop 0.1.0-alpha.1</span></header>
+  <header class="titlebar"><img src="mark.svg" alt="" width="28" height="28"><span class="brand">MuseDPI</span><span class="version">Desktop 0.1.0-alpha.2</span><button id="compact" aria-pressed="false" title="Уменьшить отступы, сохранив все разделы">Компактно</button></header>
   <div class="app-shell">
     <nav class="sidebar" aria-label="Разделы">
       <button data-page="connection" aria-current="page"><svg aria-hidden="true"><use href="#icon-plug"/></svg>Подключение</button>
@@ -36,6 +36,7 @@
           <div id="results" aria-live="polite"></div><p id="checked" class="caption">Проверка HTTP через локальный прокси.</p>
           <div class="address-row"><div><span class="caption">Адрес SOCKS5</span><div id="address">Появится после подключения</div></div><button id="copy" disabled>Копировать</button></div>
           <p id="scope-summary" class="caption"></p>
+          <details><summary>Настройки подключения</summary><fieldset class="settings-fields"><legend class="sr-only">Локальный SOCKS5</legend><label class="field" for="proxy-port">Постоянный порт SOCKS5<input id="proxy-port" type="number" min="1024" max="65535" inputmode="numeric"></label><p class="caption">Сохраняется после перезапуска. Если порт занят, выбери другой и обнови его в настройках браузера.</p></fieldset></details>
           <button class="text-button setup-link" data-page="help">Как подключить браузер или приложение</button>
         </section>
         <section data-panel="services" aria-labelledby="heading-services" hidden>
@@ -62,17 +63,18 @@
         <section data-panel="strategies" aria-labelledby="heading-strategies" hidden>
           <h1 id="heading-strategies">Стратегии</h1><p class="intro">Способ обработки HTTP и TLS для выбранных сервисов и IP-наборов.</p>
           <fieldset class="settings-fields"><legend class="sr-only">Стратегия обхода</legend><div id="profile-options" class="option-list"></div></fieldset>
-          <div class="autopick"><button id="auto">Подобрать автоматически</button><p class="caption">Проверим четыре стратегии по выбранным Discord и YouTube. Подбор перезапускает прокси; игровые соединения он не проверяет.</p></div>
+          <div class="autopick"><button id="auto">Подобрать автоматически</button><p class="caption">Проверим четыре стратегии в отдельном прокси, не прерывая текущее подключение. Только применение победителя кратко переподключит MuseDPI. Подбор можно отменить; игры и звонки не проверяются.</p></div>
         </section>
         <section data-panel="help" aria-labelledby="heading-help" hidden>
           <h1 id="heading-help">Как подключиться</h1>
           <ol class="help-steps"><li><strong>Запусти локальный прокси</strong><p>Выбери сервисы и стратегию, сохрани настройки и нажми «Подключить».</p></li><li><strong>Укажи адрес в приложении</strong><p>В настройках Firefox выбери ручной прокси SOCKS5, адрес 127.0.0.1 и порт с экрана подключения. Включи DNS через SOCKS5.</p></li><li><strong>Проверь сервисы</strong><p>Время отклика измеряется реальным HTTP-запросом. Проверка сайта не подтверждает работу звонка, видео или игровой сессии.</p></li></ol>
           <h3>Что охватывают правила</h3><p>Только трафик, который приложение направило в SOCKS5. MuseDPI Desktop не меняет системный VPN, маршруты и страну подключения. Для игр без SOCKS понадобится отдельная маршрутизация трафика.</p>
-          <h3>Настройки и перезапуск</h3><p>Настройки сохраняются на этом компьютере. Их применение при активном подключении перезапускает только прокси MuseDPI. Порт сохраняется до выхода из приложения.</p>
-          <p class="caption">MuseDPI Desktop 0.1.0-alpha.1 · ByeDPI 0.17.3</p>
+          <h3>Настройки и перезапуск</h3><p>Настройки сохраняются на этом компьютере. Их применение при активном подключении перезапускает только прокси MuseDPI. Постоянный порт по умолчанию — 1080; изменить его можно в разделе «Подключение».</p>
+          <h3>Обновление приложения</h3><p>Закрой MuseDPI, скачай Windows-архив и распакуй его в новую папку. Сохранённые настройки подхватятся автоматически. Старую папку можно оставить для отката.</p><button id="releases">Релизы на GitHub</button>
+          <p class="caption">MuseDPI Desktop 0.1.0-alpha.2 · ByeDPI 0.17.3</p>
         </section>
       </main>
-      <footer><div class="savebar" id="savebar" hidden><span>Есть изменения</span><button id="discard">Отменить</button><button id="save" class="primary">Сохранить</button></div><div id="message" role="status" aria-live="polite"></div></footer>
+      <footer><div id="activity" hidden><div><span id="activity-text" role="status"></span><progress id="activity-progress" aria-label="Прогресс проверки"></progress></div><button id="cancel">Остановить проверку</button></div><div class="savebar" id="savebar" hidden><span>Есть изменения</span><button id="discard">Отменить</button><button id="save" class="primary">Сохранить</button></div><div id="message" role="status" aria-live="polite"></div></footer>
     </div>
   </div>
 </body>

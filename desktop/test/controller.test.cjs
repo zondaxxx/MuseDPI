@@ -27,7 +27,7 @@ test('duplicate user operations are rejected', async () => {
 });
 
 test('missing engine fails within bounded time and leaves no running state', async () => {
-  const controller = new Controller('/definitely-missing-muse-engine');
+  const controller = new Controller('/definitely-missing-muse-engine', { ephemeral: true });
   await assert.rejects(controller.start('gentle'), /Не удалось/);
   assert.equal(controller.state.phase, 'error');
   assert.equal(controller.child, null);
@@ -46,6 +46,7 @@ test('failed automatic selection restores previous profile', async () => {
   controller.state.profile = 'mid-sni';
   controller.start = async id => { controller.state.profile = id; controller.state.phase = 'running'; };
   controller.diagnose = async () => [{ reachable: false }];
+  controller.createCandidate = () => ({ start: async () => {}, diagnose: controller.diagnose, close: async () => {} });
   await assert.rejects(controller.selectBest(), /не найден/);
   assert.equal(controller.state.profile, 'mid-sni');
   assert.equal(controller.state.phase, 'running');
@@ -56,15 +57,23 @@ test('automatic selection prefers complete reachability and verifies winner', as
   const controller = new Controller('/missing');
   controller.start = async id => { controller.state.profile = id; controller.state.phase = 'running'; };
   controller.diagnose = async () => controller.state.profile === 'mid-sni'
-    ? [{ reachable: true, milliseconds: 200 }, { reachable: true, milliseconds: 200 }]
-    : [{ reachable: true, milliseconds: 1 }, { reachable: false }];
+    ? [{ id: 'discord', reachable: true, milliseconds: 200 }, { id: 'youtube', reachable: true, milliseconds: 200 }]
+    : [{ id: 'discord', reachable: true, milliseconds: 1 }, { id: 'youtube', reachable: false }];
+  let candidateProfile;
+  controller.createCandidate = () => ({
+    start: async id => { candidateProfile = id; },
+    diagnose: async () => candidateProfile === 'mid-sni'
+      ? [{ id: 'discord', reachable: true, milliseconds: 200 }, { id: 'youtube', reachable: true, milliseconds: 200 }]
+      : [{ id: 'discord', reachable: true, milliseconds: 1 }, { id: 'youtube', reachable: false }],
+    close: async () => {}
+  });
   await controller.selectBest();
   assert.equal(controller.state.profile, 'mid-sni');
   assert.equal(controller.state.testing, false);
 });
 
 test('native engine accepts all profiles and preserves its port', { skip: !process.env.MUSE_TEST_ENGINE }, async () => {
-  const controller = new Controller(process.env.MUSE_TEST_ENGINE);
+  const controller = new Controller(process.env.MUSE_TEST_ENGINE, { ephemeral: true });
   let port;
   try {
     for (const id of ['gentle', 'multisplit', 'mid-sni', 'tls-record']) {

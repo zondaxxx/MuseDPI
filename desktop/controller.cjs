@@ -1,5 +1,4 @@
-const { spawn, execFile } = require('node:child_process');
-const { promisify } = require('node:util');
+const { spawn } = require('node:child_process');
 const net = require('node:net');
 const { EventEmitter } = require('node:events');
 const { commandArgs, profiles } = require('./profiles.cjs');
@@ -7,8 +6,8 @@ const { defaults, normalizeSettings, targetDomains, serviceCatalog, saveSettings
 const { mkdtemp, writeFile, rm } = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
+const { probe } = require('./probe.cjs');
 
-const execute = promisify(execFile);
 const delay = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
 async function freePort(preferredPort) {
@@ -41,27 +40,6 @@ function handshake(port) {
   });
 }
 
-async function probe(port, service) {
-  const startedAt = Date.now();
-  try {
-    const { stdout } = await execute('curl', [
-      '--disable', '--silent', '--show-error', '--noproxy', '', '--proxy', `socks5h://127.0.0.1:${port}`,
-      '--connect-timeout', '5', '--max-time', '12', '--range', '0-8191',
-      '--write-out', '\n%{http_code}\n%{time_total}\n%{size_download}', service.url
-    ], { encoding: 'buffer', timeout: 14000, maxBuffer: 1024 * 1024, windowsHide: true });
-    const boundary = stdout.lastIndexOf(Buffer.from('\n'), stdout.lastIndexOf(Buffer.from('\n')) - 1);
-    const statusBoundary = stdout.lastIndexOf(Buffer.from('\n'), boundary - 1);
-    const status = Number(stdout.subarray(statusBoundary + 1, boundary).toString());
-    const payload = stdout.subarray(0, statusBoundary);
-    const validPayload = service.id === 'discord'
-      ? /"url"\s*:\s*"wss:\/\//.test(payload.toString())
-      : payload[0] === 0xff && payload[1] === 0xd8;
-    return { id: service.id, name: service.name, reachable: status >= 200 && status < 300 && validPayload, milliseconds: Date.now() - startedAt, checkedAt: Date.now(), status };
-  } catch {
-    return { id: service.id, name: service.name, reachable: false, milliseconds: null, checkedAt: Date.now() };
-  }
-}
-
 class Controller extends EventEmitter {
   constructor(enginePath, options = {}) {
     super();
@@ -70,10 +48,15 @@ class Controller extends EventEmitter {
     this.busy = false;
     this.closed = false;
     this.listenPort = null;
+    this.ephemeral = Boolean(options.ephemeral);
+    this.probeRequest = options.probe || probe;
+    this.activeCheck = null;
+    this.selection = null;
+    this.operation = null;
     this.settings = normalizeSettings(options.settings || defaults());
     this.settingsPath = options.settingsPath;
     this.runtimeDirectory = null;
-    this.state = { phase: 'idle', profile: this.settings.profile, port: null, results: [], message: '', testing: false, checking: false };
+    this.state = { phase: 'idle', profile: this.settings.profile, port: null, results: [], message: '', testing: false, checking: false, progress: null };
   }
 
   update(values) {
@@ -87,18 +70,21 @@ class Controller extends EventEmitter {
 
   async exclusive(operation) {
     if (this.busy) throw new Error('Дождись завершения текущей операции');
+    if (this.closed) throw new Error('Приложение закрывается');
     this.busy = true;
-    try { return await operation(); } finally { this.busy = false; }
+    this.operation = Promise.resolve().then(operation);
+    try { return await this.operation; } finally { this.busy = false; this.operation = null; }
   }
 
-  async start(id) {
+  async start(id, signal) {
     if (this.closed) throw new Error('Приложение закрывается');
+    signal?.throwIfAborted();
     commandArgs(id, this.settings);
     await this.stop();
     this.update({ phase: 'starting', profile: id, results: [], message: '' });
     let port;
-    try { port = await freePort(this.listenPort); }
-    catch { this.update({ phase: 'error', message: 'Порт занят другой программой. Перезапусти MuseDPI.' }); throw new Error(this.state.message); }
+    try { port = await freePort(this.ephemeral ? this.listenPort : this.settings.proxyPort); }
+    catch { this.update({ phase: 'error', message: `Порт ${this.settings.proxyPort} недоступен. Выбери другой порт SOCKS5 в разделе «Подключение».` }); throw new Error(this.state.message); }
     this.listenPort = port;
     if (this.closed) throw new Error('Приложение закрывается');
     let args;
@@ -112,6 +98,7 @@ class Controller extends EventEmitter {
         await writeFile(files[name], value, { mode: 0o600 });
       }
       if (this.closed) throw new Error('Приложение закрывается');
+      signal?.throwIfAborted();
       args = ['-i', '127.0.0.1', '-p', String(port), ...commandArgs(id, this.settings, files)];
       if (args.join(' ').length > 26000) throw new Error('Слишком много игровых правил. Уменьши число портов.');
     } catch (error) {
@@ -132,9 +119,12 @@ class Controller extends EventEmitter {
     try {
       const deadline = Date.now() + 4000;
       while (Date.now() < deadline && !failed && child.exitCode === null) {
+        signal?.throwIfAborted();
+        if (this.closed) throw new Error('Приложение закрывается');
         try {
           await handshake(port);
           if (failed || this.child !== child) break;
+          signal?.throwIfAborted();
           this.update({ phase: 'running', port });
           return;
         } catch { await delay(80); }
@@ -167,19 +157,50 @@ class Controller extends EventEmitter {
 
   async close() {
     this.closed = true;
+    this.cancel();
+    await this.operation?.catch(() => {});
     await this.stop();
   }
 
-  async diagnose() {
+  cancel() {
+    this.activeCheck?.abort();
+    this.selection?.abort();
+  }
+
+  async diagnose(signal) {
     if (this.state.phase !== 'running') throw new Error('Сначала запусти локальный прокси');
+    if (this.activeCheck) throw new Error('Проверка уже выполняется');
     const port = this.state.port;
+    const child = this.child;
     const services = serviceCatalog.filter(service => this.settings.serviceIds.includes(service.id) && service.probe);
+    const check = new AbortController();
+    const abort = () => check.abort();
+    signal?.addEventListener('abort', abort, { once: true });
+    if (signal?.aborted) check.abort();
+    this.activeCheck = check;
     this.update({ results: [], checking: true });
     try {
-      const results = await Promise.all(services.map(service => probe(port, { ...service, url: service.probe.url })));
-      if (this.state.port === port) this.update({ results });
+      const results = await Promise.all(services.map(async service => {
+        const result = await this.probeRequest(port, { ...service, ...service.probe }, { signal: check.signal });
+        check.signal.throwIfAborted();
+        if (this.state.phase === 'running' && this.state.port === port && this.child === child) {
+          const completed = [...this.state.results, result];
+          this.update({ results: services.flatMap(item => completed.filter(value => value.id === item.id)) });
+        }
+        return result;
+      }));
+      if (this.state.phase !== 'running' || this.state.port !== port || this.child !== child) throw new Error('Прокси остановился во время проверки. Подключись снова.');
       return results;
-    } finally { this.update({ checking: false }); }
+    } catch (error) {
+      if (!check.signal.aborted || signal) throw error;
+      this.update({ message: 'Проверка отменена. Подключение продолжает работать.' });
+      return this.state.results;
+    } finally {
+      check.abort();
+      signal?.removeEventListener('abort', abort);
+      this.activeCheck = null;
+      this.update({ checking: false });
+    }
   }
 
   async configure(input) {
@@ -203,37 +224,66 @@ class Controller extends EventEmitter {
     if (wasRunning) await this.diagnose();
   }
 
+  createCandidate() {
+    return new Controller(this.enginePath, { settings: this.settings, ephemeral: true, probe: this.probeRequest });
+  }
+
   async selectBest() {
     if (!serviceCatalog.some(service => this.settings.serviceIds.includes(service.id) && service.probe)) throw new Error('Для автоподбора выбери Discord или YouTube — для них доступна HTTP-проверка.');
     const previous = this.state.profile;
     const wasRunning = this.state.phase === 'running';
+    const selection = new AbortController();
+    this.selection = selection;
+    const { signal } = selection;
+    const candidate = this.createCandidate();
     let best = null;
+    let switched = false;
     this.update({ testing: true });
     try {
-      for (const profile of profiles) {
+      for (const [index, profile] of profiles.entries()) {
+        signal.throwIfAborted();
         if (this.closed) throw new Error('Приложение закрывается');
-        this.update({ message: `Проверяем: ${profile.name}` });
+        this.update({ progress: { current: index + 1, total: profiles.length, name: profile.name }, message: `Проверяем: ${profile.name}. Текущее подключение не меняется.` });
         try {
-          await this.start(profile.id);
-          const results = await this.diagnose();
+          await candidate.start(profile.id, signal);
+          const results = await candidate.diagnose(signal);
           const reachable = results.filter(result => result.reachable);
           const count = reachable.length;
           const latency = reachable.reduce((total, result) => total + result.milliseconds, 0);
-          if (count && (!best || count > best.count || (count === best.count && latency < best.latency))) best = { id: profile.id, count, latency };
-        } catch {}
+          if (count && (!best || count > best.count || (count === best.count && latency < best.latency))) best = { id: profile.id, count, latency, services: reachable.map(result => result.id) };
+        } catch (error) { if (signal.aborted || this.closed) throw error; }
       }
       if (!best) throw new Error('Рабочий профиль не найден. Предыдущая настройка сохранена.');
-      await this.start(best.id);
-      const confirmation = await this.diagnose();
-      if (confirmation.filter(result => result.reachable).length < best.count) throw new Error('Профиль не прошёл повторную проверку. Предыдущая настройка сохранена.');
+      this.update({ progress: { current: profiles.length, total: profiles.length, name: 'Повторная проверка' } });
+      await candidate.start(best.id, signal);
+      const confirmation = await candidate.diagnose(signal);
+      const confirms = results => best.services.every(id => results.some(result => result.id === id && result.reachable));
+      if (!confirms(confirmation)) throw new Error('Профиль не прошёл повторную проверку. Предыдущая настройка сохранена.');
+      await candidate.close();
+      signal.throwIfAborted();
+      this.update({ progress: { current: profiles.length, total: profiles.length, name: 'Применяем профиль' } });
+      switched = true;
+      await this.start(best.id, signal);
+      if (!confirms(await this.diagnose(signal))) throw new Error('Профиль не прошёл проверку на основном порту. Предыдущая настройка сохранена.');
+      signal.throwIfAborted();
       if (this.settingsPath) await saveSettings(this.settingsPath, { ...this.settings, profile: best.id });
       this.settings.profile = best.id;
       this.update({ message: 'Лучший из проверенных профилей подключён. Это HTTP-проверка, не тест видеопотока.' });
     } catch (error) {
-      if (wasRunning && !this.closed) await this.start(previous); else await this.stop();
-      this.update({ profile: previous, message: error.message });
-      throw error;
-    } finally { this.update({ testing: false }); }
+      let message = signal.aborted ? 'Подбор отменён. Предыдущая настройка сохранена.' : error.message;
+      if (switched) {
+        if (wasRunning && !this.closed) {
+          try { await this.start(previous); }
+          catch { message += ' Восстановить подключение не удалось — попробуй подключиться вручную.'; }
+        } else await this.stop();
+      }
+      this.update({ profile: previous, message });
+      if (!signal.aborted) throw new Error(message);
+    } finally {
+      await candidate.close();
+      this.selection = null;
+      this.update({ testing: false, progress: null });
+    }
   }
 }
 

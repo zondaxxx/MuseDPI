@@ -5,6 +5,13 @@ let draft;
 let dirty = false;
 let actionError = '';
 let notice = '';
+let cancelling = false;
+
+function setCompact(enabled) {
+  document.body.classList.toggle('compact', enabled);
+  byId('compact').setAttribute('aria-pressed', String(enabled));
+  try { localStorage.setItem('muse-compact', String(enabled)); } catch {}
+}
 
 function errorMessage(error) {
   return error.message.replace(/^Error invoking remote method '[^']+': (?:Error: )?/, '');
@@ -46,6 +53,7 @@ function fillForm() {
   document.querySelectorAll('[name="service"]').forEach(input => { input.checked = draft.serviceIds.includes(input.value); });
   document.querySelectorAll('[name="profile"]').forEach(input => { input.checked = draft.profile === input.value; });
   byId('custom-domains').value = draft.customDomains;
+  byId('proxy-port').value = draft.proxyPort;
   byId('excluded-domains').value = draft.excludedDomains;
   byId('ip-mode').value = draft.ipMode;
   byId('include-ips').value = draft.includeIps;
@@ -61,6 +69,7 @@ function fillForm() {
 function readForm() {
   draft = {
     version: 1,
+    proxyPort: Number(byId('proxy-port').value),
     profile: document.querySelector('[name="profile"]:checked')?.value || state.settings.profile,
     serviceIds: [...document.querySelectorAll('[name="service"]:checked')].map(input => input.value),
     customDomains: byId('custom-domains').value,
@@ -97,7 +106,15 @@ function render(next) {
   byId('diagnose').textContent = state.checking ? 'Проверяем…' : 'Проверить';
   byId('auto').disabled = busy || dirty || !hasProbes;
   byId('copy').disabled = !running;
-  byId('address').textContent = running ? `127.0.0.1:${state.port}` : 'Появится после подключения';
+  byId('address').textContent = `127.0.0.1:${running ? state.port : state.settings.proxyPort}`;
+  byId('activity').hidden = !state.testing && !state.checking;
+  byId('cancel').disabled = cancelling;
+  byId('cancel').textContent = cancelling ? 'Отменяем…' : 'Остановить проверку';
+  byId('activity-text').textContent = state.progress ? `${state.progress.current} из ${state.progress.total} · ${state.progress.name}` : 'Проверяем выбранные сервисы…';
+  if (state.progress) {
+    byId('activity-progress').max = state.progress.total;
+    byId('activity-progress').value = state.progress.current;
+  } else byId('activity-progress').removeAttribute('value');
   byId('service-count').textContent = String(draft.serviceIds.length);
   byId('savebar').hidden = !dirty;
   byId('save').textContent = running ? 'Применить и переподключить' : 'Сохранить';
@@ -118,7 +135,7 @@ function render(next) {
     const label = document.createElement('strong');
     label.textContent = service.name;
     const value = document.createElement('span');
-    value.textContent = !service.probe ? 'Без HTTP-теста' : result ? result.reachable ? `${result.milliseconds} мс · доступен` : 'Проверка не пройдена' : state.checking ? 'Проверяем…' : 'Не проверен';
+    value.textContent = !service.probe ? 'Без HTTP-теста' : result ? result.reachable ? `${result.milliseconds} мс · доступен` : result.error || 'Проверка не пройдена' : state.checking ? 'Проверяем…' : 'Не проверен';
     if (result) value.className = result.reachable ? 'ok' : 'failed';
     row.append(label, value);
     return row;
@@ -145,7 +162,17 @@ async function action(name, payload) {
     if (name === 'configure' || name === 'auto') fillForm();
     if (name === 'copy') notice = 'Адрес SOCKS5 скопирован';
   } catch (error) { actionError = errorMessage(error); }
-  finally { pending = false; render(state); }
+  finally { pending = false; cancelling = false; render(state); }
+}
+
+async function auxiliaryAction(name) {
+  if (!state) return;
+  if (name === 'cancel') { cancelling = true; render(state); }
+  try {
+    await window.muse.action(name);
+    if (name === 'copy') notice = 'Адрес SOCKS5 скопирован';
+  } catch (error) { actionError = errorMessage(error); cancelling = false; }
+  render(state);
 }
 
 document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => showPage(button.dataset.page)));
@@ -153,7 +180,11 @@ document.querySelectorAll('.settings-fields').forEach(fieldset => fieldset.addEv
 byId('connect').addEventListener('click', () => action(state.phase === 'running' ? 'disconnect' : 'connect'));
 byId('auto').addEventListener('click', () => action('auto'));
 byId('diagnose').addEventListener('click', () => action('diagnose'));
-byId('copy').addEventListener('click', () => action('copy'));
+byId('copy').addEventListener('click', () => auxiliaryAction('copy'));
+byId('cancel').addEventListener('click', () => auxiliaryAction('cancel'));
+byId('releases').addEventListener('click', () => auxiliaryAction('releases'));
+byId('compact').addEventListener('click', () => setCompact(!document.body.classList.contains('compact')));
+try { setCompact(localStorage.getItem('muse-compact') === 'true'); } catch {}
 byId('save').addEventListener('click', () => action('configure', draft));
 byId('discard').addEventListener('click', () => { fillForm(); actionError = ''; notice = ''; render(state); });
 document.querySelectorAll('[data-import]').forEach(button => button.addEventListener('click', async () => {

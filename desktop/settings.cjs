@@ -14,7 +14,7 @@ const serviceCatalog = [
 const profileIds = ['gentle', 'multisplit', 'mid-sni', 'tls-record'];
 
 function defaults() {
-  return { version: 1, profile: 'multisplit', serviceIds: ['discord', 'youtube'], customDomains: '', excludedDomains: '', ipMode: 'off', includeIps: '', excludeIps: '', game: { enabled: false, tcpPorts: '27015-27050', udpPorts: '', udpFakes: 3, ttl: 8 } };
+  return { version: 1, proxyPort: 1080, profile: 'multisplit', serviceIds: ['discord', 'youtube'], customDomains: '', excludedDomains: '', ipMode: 'off', includeIps: '', excludeIps: '', game: { enabled: false, tcpPorts: '27015-27050', udpPorts: '', udpFakes: 3, ttl: 8 } };
 }
 
 function entries(value, label, maxLength = 524288) {
@@ -66,12 +66,14 @@ function engineIps(value) {
 
 function normalizeSettings(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input) || input.version !== 1 || !input.game || typeof input.game !== 'object') throw new Error('Неверный формат настроек');
+  const proxyPort = input.proxyPort === undefined ? 1080 : input.proxyPort;
+  if (!Number.isInteger(proxyPort) || proxyPort < 1024 || proxyPort > 65535) throw new Error('Порт SOCKS5 должен быть целым числом от 1024 до 65535');
   if (!profileIds.includes(input.profile)) throw new Error('Неизвестная стратегия');
   if (!Array.isArray(input.serviceIds) || input.serviceIds.length > serviceCatalog.length || input.serviceIds.some(id => !serviceCatalog.some(service => service.id === id))) throw new Error('Неизвестный сервис');
   if (!['off', 'extend', 'only'].includes(input.ipMode)) throw new Error('Неизвестный режим IP-наборов');
   if (typeof input.game.enabled !== 'boolean' || !Number.isInteger(input.game.udpFakes) || input.game.udpFakes < 1 || input.game.udpFakes > 6 || !Number.isInteger(input.game.ttl) || input.game.ttl < 1 || input.game.ttl > 32) throw new Error('UDP: от 1 до 6 пакетов, TTL от 1 до 32');
   if (ports(input.game.tcpPorts).length + ports(input.game.udpPorts).length > 56) throw new Error('Не более 56 игровых портов суммарно для TCP и UDP');
-  const settings = { version: 1, profile: input.profile, serviceIds: [...new Set(input.serviceIds)], customDomains: domains(input.customDomains).join('\n'), excludedDomains: domains(input.excludedDomains).join('\n'), ipMode: input.ipMode, includeIps: ipEntries(input.includeIps).join('\n'), excludeIps: ipEntries(input.excludeIps).join('\n'), game: { enabled: input.game.enabled, tcpPorts: input.game.tcpPorts.trim(), udpPorts: input.game.udpPorts.trim(), udpFakes: input.game.udpFakes, ttl: input.game.ttl } };
+  const settings = { version: 1, proxyPort, profile: input.profile, serviceIds: [...new Set(input.serviceIds)], customDomains: domains(input.customDomains).join('\n'), excludedDomains: domains(input.excludedDomains).join('\n'), ipMode: input.ipMode, includeIps: ipEntries(input.includeIps).join('\n'), excludeIps: ipEntries(input.excludeIps).join('\n'), game: { enabled: input.game.enabled, tcpPorts: input.game.tcpPorts.trim(), udpPorts: input.game.udpPorts.trim(), udpFakes: input.game.udpFakes, ttl: input.game.ttl } };
   if (settings.ipMode !== 'off' && !settings.includeIps) throw new Error('Добавь хотя бы один IP или выбери «Выключено»');
   if (settings.game.enabled && !ports(settings.game.tcpPorts).length && !ports(settings.game.udpPorts).length) throw new Error('Укажи хотя бы один игровой порт');
   return settings;

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, clipboard, session, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, clipboard, session, dialog, shell } = require('electron');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { Controller } = require('./controller.cjs');
@@ -25,11 +25,15 @@ app.whenReady().then(async () => {
   session.defaultSession.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   window.webContents.on('will-navigate', event => event.preventDefault());
-  window.loadFile('index.html');
   controller.on('state', state => { if (!window.isDestroyed()) window.webContents.send('state', state); });
   ipcMain.handle('action', async (event, action, id) => {
     if (event.sender !== window.webContents || event.senderFrame?.url !== page) throw new Error('Недопустимый источник команды');
     if (action === 'state') return controller.snapshot();
+    if (action === 'cancel') { controller.cancel(); return controller.snapshot(); }
+    if (action === 'releases') {
+      await shell.openExternal('https://github.com/zondaxxx/MuseDPI/releases?q=desktop-v&expanded=true');
+      return controller.snapshot();
+    }
     if (action === 'import-ipset') {
       const selected = await dialog.showOpenDialog(window, { title: 'Импорт IP-набора', properties: ['openFile'], filters: [{ name: 'IP-наборы', extensions: ['txt', 'cidr', 'list'] }] });
       if (selected.canceled) return null;
@@ -58,13 +62,14 @@ app.whenReady().then(async () => {
       return controller.snapshot();
     });
   });
+  await window.loadFile(path.join(__dirname, 'index.html'));
 });
 
-app.on('second-instance', () => { if (window) { window.show(); window.focus(); } });
+app.on('second-instance', () => { if (window && !window.isDestroyed()) { if (window.isMinimized()) window.restore(); window.show(); window.focus(); } });
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', event => {
   if (quitting || !controller) return;
   event.preventDefault();
   quitting = true;
-  controller.close().finally(() => app.quit());
+  controller.close().catch(() => {}).finally(() => app.quit());
 });
