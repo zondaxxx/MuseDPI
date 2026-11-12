@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generation": 6,
-  "updatedAt": "2026-09-14",
+  "generation": 7,
+  "updatedAt": "2026-11-12",
   "minimumAppVersion": "0.4.3",
   "minimumEngineVersion": "0.17.3",
   "revokedStrategyIDs": [
@@ -28,7 +28,7 @@
       "name": "Flowseal payload + Multisplit",
       "nameRu": "Flowseal payload + Multisplit",
       "summary": "iOS translation of Flowseal's current profile: real QUIC/Discord UDP decoys plus Apple-supported TLS ClientHello splitting.",
-      "summaryRu": "Перенос текущего профиля Flowseal на iOS: настоящие QUIC/Discord UDP-приманки и поддерживаемое Apple разбиение TLS ClientHello.",
+      "summaryRu": "Перенос текущего профиля Flowseal на iOS: настоящие QUIC/Discord UDP-приманки и поддерживаемое Apple разбиение TLS ClientHello. UDP-приманки сверены с Flowseal 1.10.4: байты не изменились. Это прежняя адаптация для ByeDPI, не текущая winws-стратегия; голосовые UDP-диапазоны требуют проверки на устройстве.",
       "services": [
         "Discord",
         "YouTube",
@@ -39,8 +39,8 @@
       ],
       "stability": "Flowseal-derived / balanced",
       "stabilityRu": "На основе Flowseal / сбалансированная",
-      "sourceName": "Flowseal/zapret-discord-youtube + hufrea/byedpi",
-      "sourceURL": "https://github.com/Flowseal/zapret-discord-youtube/blob/main/general.bat",
+      "sourceName": "Flowseal UDP payloads (verified 1.10.4) + MuseDPI / ByeDPI adaptation",
+      "sourceURL": "https://github.com/Flowseal/zapret-discord-youtube/tree/2401b7a13837139b0265632464ba563dddbf80d8/bin",
       "commandArgs": [
         "-Kt,h",
         "{palka_targets}",
@@ -79,7 +79,7 @@
       "name": "Flowseal payload + TLS Record",
       "nameRu": "Flowseal payload + TLS-запись",
       "summary": "Uses the current Flowseal UDP payloads and replaces raw TCP packet tricks with a TLS record split at the SNI.",
-      "summaryRu": "Использует текущие UDP-payload Flowseal, а недоступные raw TCP-трюки заменяет разбиением TLS-записи в SNI.",
+      "summaryRu": "Использует текущие UDP-payload Flowseal, а недоступные raw TCP-трюки заменяет разбиением TLS-записи в SNI. UDP-приманки сверены с Flowseal 1.10.4: байты не изменились. Это прежняя адаптация для ByeDPI, не текущая winws-стратегия; голосовые UDP-диапазоны требуют проверки на устройстве.",
       "services": [
         "Discord",
         "YouTube",
@@ -90,8 +90,8 @@
       ],
       "stability": "Flowseal-derived / strong",
       "stabilityRu": "На основе Flowseal / усиленная",
-      "sourceName": "Flowseal/zapret-discord-youtube + hufrea/byedpi",
-      "sourceURL": "https://github.com/Flowseal/zapret-discord-youtube/blob/main/general.bat",
+      "sourceName": "Flowseal UDP payloads (verified 1.10.4) + MuseDPI / ByeDPI adaptation",
+      "sourceURL": "https://github.com/Flowseal/zapret-discord-youtube/tree/2401b7a13837139b0265632464ba563dddbf80d8/bin",
       "commandArgs": [
         "-Kt,h",
         "{palka_targets}",
@@ -594,6 +594,137 @@
         "-l",
         "hex:c50000000114561f770d1828d2ed971aac854b64ca2daa9dfacc144484e29d57118fc0e3106227bac93ce86bbd4df3008000047c96a83cf0f2bd3f7325b122570306230e58b3ad20267f5027bfe4a742a591858739316a884b9c132cd5b51b9c003b0adf1dc20dda89f25743bcce6dd7747d1f45225e1bc1961c0f6e58a6323afb7abd953b09d6e1585f82d88c990782077820092171c2c4f0a27a831a30f2895f372c534d940553e579156bc4888da36a3672da886639f93e822afff20353e2e158da006a48d568a5e2c5b1cc14661371c7493dc121b0ad9a6726a460866d26b19c4505d65959135e4a6cbc7df6e172df9a2cc49a02d7f7a88ae409b3ce6439959a4881c56847d1c6c3efa65e065d7ffd999d49475e289d51dc9cca8eb85db21142e2cd60baa3127f27b91be928cbcab6ce525335d929a24848e948cd6962e132ff704a64ad6aad04dfb55b08967cd512608984699c91775a137054ee9677a55f283da180550e76c16864f510610d3fb0d0fd42ed9b72a0faeb7e274cd7c16a465df1a90c2ba640e1a20fcfa242aa4eefeb068febb4841818490e8a9c41363ffd1483a79e2ffeb4cd5e7c9b4a60f6b4b8f6b6ff10871d0b808174f095c6b0bff366cd1b15f5efb56b5ca4fef7ab78872a8726b450673b1a7faf0a662361d8c3e77768020926911e47efdcf06d66c530323427590b26f8bac3c5d0c120151ca72907dfd34ce5e0776f819d37211798d258652bb4f01b6ddce9d79909b462adcfdc3dc6e8fb555da1edaf77e29fde28e20e76b5e856629e1f972c706ac7acdbef0c2b2bf5bac0d3467bbcd9ac94dcc11d69da822e695d805d68273f24a4d1fb8b1ba437b56b4beae165ca39c00227ef55262943a116e07c463b59acc2491b27a9082e919c7491303c3eaaed1d9de2b6f49804b6dde6da1174060114fc8fb01ee9b3392c646c1bab1449096c79e6dc705c997d150f9cc8a7dac290b60570cb6d746ce9242e7b0d8099a8d8ee1e598584714204522c3198a637903af905d263e2e5d2c1887ba8417e600472f9296a298eae86945bac04da17ef0d73ceb81cf89d5532f30267b55d8b62b080e9f69e828d7e056f1c7c6f088ea4286a564651f69975d1de317893eab722cdc09b4426d169cc90c9a762cbd6be7137bb56999b0abcb4d7d200adeafe6c9cd46eb612c49eaec0b1fc0ce970541b45e708b9eae6f1d33d0ac4ed4d58c263865e7c2adf9e1e7a46f3500383b447f26ddb389924beaaa46ab6ac7a49ff599f2fc40de334983cb890f7aa62d528e89fd5e75e474d3b4ee495a1335581b0e0fd5d03df5aed08295ad2c95a29bf548622740aa5c05446692cf8f6595bdef7855944b1822d565f37a5d33dd796e358b7743f3275d4db70bf600d4ef749f7605b82509b8dc4affc2c3c3c280292021f470dc17b5a547f68474736ee8c198fec1e3f5186a9616ed0c69643f2c618f5b199f0d50a27e9776ea234ff8697fc57f2d256a67a8fdc1f26bda291d66d5af79b09dc92b40e7050f3f7a71f6aee873876defbb146631afdeaefef2de6b0ead67496b4fd97ff131f9e05385552cb7fe18c534a0e72dd1aa1c4cb903571be5ef915216e95083914365262d0d271fc3d65823baa82ddef382e1845ccfccc8f8064f804e106c2f27b42c6845f536ae3f17b1746d8e874b5b68b874951b1",
         "-a6",
+        "-An"
+      ],
+      "minimumAppVersion": "0.4.3",
+      "minimumEngineVersion": "0.17.3"
+    },
+    {
+      "id": "muse.common.gentle-sni.v1",
+      "name": "Gentle SNI split",
+      "nameRu": "Мягкое разбиение SNI",
+      "summary": "A low-complexity candidate without OOB or TTL manipulation; test on your network.",
+      "summaryRu": "Простой кандидат без OOB и изменения TTL. Проверяйте на своей сети.",
+      "services": [
+        "Discord",
+        "YouTube",
+        "Instagram",
+        "TikTok",
+        "X / Twitter",
+        "Telegram"
+      ],
+      "stability": "Experimental / network-dependent",
+      "stabilityRu": "Экспериментальная / зависит от сети",
+      "sourceName": "hufrea/byedpi",
+      "sourceURL": "https://github.com/hufrea/byedpi/blob/v0.17.3/README.md",
+      "commandArgs": [
+        "-Kt",
+        "{palka_targets}",
+        "-s1+s",
+        "-An",
+        "-Kh",
+        "{palka_targets}",
+        "-Mh,d,r",
+        "-s1+h",
+        "-An"
+      ],
+      "minimumAppVersion": "0.4.3",
+      "minimumEngineVersion": "0.17.3"
+    },
+    {
+      "id": "muse.common.mid-sni.v1",
+      "name": "Mid-SNI split",
+      "nameRu": "Разбиение в середине SNI",
+      "summary": "Splits at the beginning of TLS and the middle of SNI; avoids fixed hostname-length assumptions.",
+      "summaryRu": "Разбиение в начале TLS и середине SNI без привязки к длине имени хоста.",
+      "services": [
+        "Discord",
+        "YouTube",
+        "Instagram",
+        "TikTok",
+        "X / Twitter",
+        "Telegram"
+      ],
+      "stability": "Experimental / network-dependent",
+      "stabilityRu": "Экспериментальная / зависит от сети",
+      "sourceName": "hufrea/byedpi",
+      "sourceURL": "https://github.com/hufrea/byedpi/blob/v0.17.3/README.md",
+      "commandArgs": [
+        "-Kt",
+        "{palka_targets}",
+        "-s1",
+        "-s0+sm",
+        "-An",
+        "-Kh",
+        "{palka_targets}",
+        "-Mh,d,r",
+        "-s1+h",
+        "-An"
+      ],
+      "minimumAppVersion": "0.4.3",
+      "minimumEngineVersion": "0.17.3"
+    },
+    {
+      "id": "muse.common.record-mid-sni.v1",
+      "name": "Mid-SNI TLS record",
+      "nameRu": "TLS-записи в середине SNI",
+      "summary": "Alternative TLS-record candidate. Some middleboxes reject fragmented TLS records.",
+      "summaryRu": "Альтернативный профиль TLS-записей. Некоторые сетевые устройства не принимают такое разбиение.",
+      "services": [
+        "Discord",
+        "YouTube",
+        "Instagram",
+        "TikTok",
+        "X / Twitter",
+        "Telegram"
+      ],
+      "stability": "Experimental / network-dependent",
+      "stabilityRu": "Экспериментальная / зависит от сети",
+      "sourceName": "hufrea/byedpi",
+      "sourceURL": "https://github.com/hufrea/byedpi/blob/v0.17.3/README.md",
+      "commandArgs": [
+        "-Kt",
+        "{palka_targets}",
+        "-r0+sm",
+        "-s1",
+        "-An",
+        "-Kh",
+        "{palka_targets}",
+        "-Mh,d,r",
+        "-s1+h",
+        "-An"
+      ],
+      "minimumAppVersion": "0.4.3",
+      "minimumEngineVersion": "0.17.3"
+    },
+    {
+      "id": "muse.common.record-sni-end.v1",
+      "name": "TLS record at SNI end",
+      "nameRu": "TLS-запись на границе SNI",
+      "summary": "Alternative record boundary at the end of SNI, with TCP splitting at SNI start.",
+      "summaryRu": "Альтернативная граница TLS-записи в конце SNI и TCP-разбиение у начала SNI.",
+      "services": [
+        "Discord",
+        "YouTube",
+        "Instagram",
+        "TikTok",
+        "X / Twitter",
+        "Telegram"
+      ],
+      "stability": "Experimental / network-dependent",
+      "stabilityRu": "Экспериментальная / зависит от сети",
+      "sourceName": "hufrea/byedpi",
+      "sourceURL": "https://github.com/hufrea/byedpi/blob/v0.17.3/README.md",
+      "commandArgs": [
+        "-Kt",
+        "{palka_targets}",
+        "-r0+se",
+        "-s1+s",
+        "-An",
+        "-Kh",
+        "{palka_targets}",
+        "-Mh,d,r",
+        "-s1+h",
         "-An"
       ],
       "minimumAppVersion": "0.4.3",

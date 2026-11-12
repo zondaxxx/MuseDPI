@@ -9,6 +9,13 @@ import XCTest
 @testable import SwByeDPI
 
 final class SBDConfigTests: XCTestCase {
+    func testGenerationSevenTLSProfilesRemainIntact() {
+        let variants = [["-s1+s"], ["-s1", "-s0+sm"], ["-r0+sm", "-s1"], ["-r0+se", "-s1+s"]]
+        for variant in variants {
+            let arguments = ["-Kt", "-H:discord.com youtube.com"] + variant + ["-An", "-Kh", "-H:discord.com youtube.com", "-Mh,d,r", "-s1+h", "-An"]
+            XCTAssertEqual(SBDConfig(commandArgs: arguments).validatedCmdArgs, arguments)
+        }
+    }
     
     func testArgsValidator() {
         let expectedArgs: [String] = ["-i", "127.0.0.1", "-p", "1080", "-b", "1024", "-c", "512", "-s", "1"]

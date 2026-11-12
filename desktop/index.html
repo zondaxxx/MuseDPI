@@ -17,7 +17,7 @@
     <symbol id="icon-sliders" viewBox="0 0 24 24"><path d="M3 7h6m4 0h8M3 17h10m4 0h4"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></symbol>
     <symbol id="icon-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .6-1.5 1-1.5 2m0 3h.01"/></symbol>
   </defs></svg>
-  <header class="titlebar"><img src="mark.svg" alt="" width="28" height="28"><span class="brand">MuseDPI</span><span class="version">Desktop 0.1.0-alpha.2</span><button id="compact" aria-pressed="false" title="Уменьшить отступы, сохранив все разделы">Компактно</button></header>
+  <header class="titlebar"><img src="mark.svg" alt="" width="28" height="28"><span class="brand">MuseDPI</span><span class="version">Desktop 0.1.0-alpha.3</span><button id="compact" aria-pressed="false" title="Уменьшить отступы, сохранив все разделы">Компактно</button></header>
   <div class="app-shell">
     <nav class="sidebar" aria-label="Разделы">
       <button data-page="connection" aria-current="page"><svg aria-hidden="true"><use href="#icon-plug"/></svg>Подключение</button>
@@ -50,20 +50,23 @@
           <fieldset class="settings-fields"><legend class="sr-only">Настройки IP-наборов</legend>
           <label class="field" for="ip-mode">Режим<select id="ip-mode"><option value="off">По доменам сервисов</option><option value="extend">Сервисы и IP-набор</option><option value="only">Только IP-набор</option></select></label><p id="ip-mode-help" class="caption"></p>
           <div class="editor-heading"><label for="include-ips">Применять обход</label><button data-import="include-ips">Импорт .txt</button></div><textarea id="include-ips" rows="5" spellcheck="false" placeholder="203.0.113.0/24&#10;2001:db8::/32"></textarea><p id="include-count" class="caption">Список пуст</p>
-          <div class="editor-heading"><label for="exclude-ips">Исключения IP</label><button data-import="exclude-ips">Импорт .txt</button></div><textarea id="exclude-ips" rows="3" spellcheck="false" placeholder="192.168.0.0/16"></textarea><p class="caption">Исключения действуют во всех режимах, в том числе для игр. Файл до 512 КБ, до 5000 записей; комментарии начинаются с #.</p></fieldset>
+          <button data-import="include-ips" data-source="flowseal">Добавить IP-набор Flowseal</button><p class="caption">33 336 записей из upstream .backup. Общий набор: охватывает больше адресов, чем выбранные сервисы. Добавляется только в черновик; режим сам не переключается.</p>
+          <div class="editor-heading"><label for="exclude-ips">Исключения IP</label><button data-import="exclude-ips">Импорт .txt</button></div><textarea id="exclude-ips" rows="3" spellcheck="false" placeholder="192.168.0.0/16"></textarea><p class="caption">Исключения действуют во всех режимах, в том числе для игр. Файл до 2 МиБ, до 50 000 записей; комментарии начинаются с #.</p></fieldset>
         </section>
         <section data-panel="games" aria-labelledby="heading-games" hidden>
           <h1 id="heading-games">Игровой фильтр</h1><p class="intro">Дополнительный обход по портам назначения, независимо от выбранных сервисов.</p>
           <fieldset class="settings-fields"><legend class="sr-only">Игровые правила</legend><label class="option-row toggle-row"><span><strong>Обрабатывать игровые порты</strong><small>Только соединения, направленные через SOCKS5</small></span><input type="checkbox" id="game-enabled" role="switch"></label>
           <label class="field" for="tcp-ports">Порты TCP<input id="tcp-ports" placeholder="27015-27050" autocomplete="off"></label><p class="caption">Первый TCP-запрос разбивается на части. До 56 портов суммарно для TCP и UDP: значения или диапазоны через запятую.</p>
           <label class="field" for="udp-ports">Порты UDP <span class="experimental">Экспериментально</span><input id="udp-ports" placeholder="Например, 27015, 27020-27030" autocomplete="off"></label><p class="caption">UDP-фейки могут нарушить соединение. Оставь поле пустым, если нужен только TCP. Игра должна использовать SOCKS5 UDP.</p>
-          <div class="field-pair"><label class="field" for="udp-fakes">Количество UDP-фейков<input id="udp-fakes" type="number" min="1" max="6"></label><label class="field" for="game-ttl">TTL фейков<input id="game-ttl" type="number" min="1" max="32"></label></div>
+          <label class="field" for="udp-payload">Содержимое UDP-приманки<select id="udp-payload"></select></label><p class="caption">Данные Flowseal, не запуск winws. Применяются только к указанным UDP-портам с учётом IP-правил. Выбор QUIC-приманки сам не добавляет порт 443. HTTP-тест не проверяет UDP.</p>
+          <div class="field-pair"><label class="field" for="udp-fakes">Количество UDP-фейков<input id="udp-fakes" type="number" min="1" max="12"></label><label class="field" for="game-ttl">TTL фейков<input id="game-ttl" type="number" min="1" max="32"></label></div>
           <p class="caption">В режиме «Только IP-набор» фильтр ограничен адресами набора. UDP поддерживает один адрес назначения на SOCKS-ассоциацию. Запущенные игры автоматически не определяются.</p></fieldset>
         </section>
         <section data-panel="strategies" aria-labelledby="heading-strategies" hidden>
           <h1 id="heading-strategies">Стратегии</h1><p class="intro">Способ обработки HTTP и TLS для выбранных сервисов и IP-наборов.</p>
           <fieldset class="settings-fields"><legend class="sr-only">Стратегия обхода</legend><div id="profile-options" class="option-list"></div></fieldset>
-          <div class="autopick"><button id="auto">Подобрать автоматически</button><p class="caption">Проверим четыре стратегии в отдельном прокси, не прерывая текущее подключение. Только применение победителя кратко переподключит MuseDPI. Подбор можно отменить; игры и звонки не проверяются.</p></div>
+          <div class="autopick"><button id="auto">Подобрать автоматически</button><p class="caption">Проверим восемь стратегий ByeDPI в отдельном прокси. Применение другого победителя кратко переподключит MuseDPI; если победил текущий профиль, перезапуска нет. Подбор можно отменить; игры и звонки не проверяются.</p></div>
+          <section id="selection-report" hidden><h3>Последний подбор</h3><div id="selection-results"></div><p class="caption">Доступность выбранных HTTP-проб и среднее время запроса, не игровой ping. При отмене остаются завершённые результаты. После изменения настроек отчёт очищается.</p></section>
         </section>
         <section data-panel="help" aria-labelledby="heading-help" hidden>
           <h1 id="heading-help">Как подключиться</h1>
@@ -71,7 +74,8 @@
           <h3>Что охватывают правила</h3><p>Только трафик, который приложение направило в SOCKS5. MuseDPI Desktop не меняет системный VPN, маршруты и страну подключения. Для игр без SOCKS понадобится отдельная маршрутизация трафика.</p>
           <h3>Настройки и перезапуск</h3><p>Настройки сохраняются на этом компьютере. Их применение при активном подключении перезапускает только прокси MuseDPI. Постоянный порт по умолчанию — 1080; изменить его можно в разделе «Подключение».</p>
           <h3>Обновление приложения</h3><p>Закрой MuseDPI, скачай Windows-архив и распакуй его в новую папку. Сохранённые настройки подхватятся автоматически. Старую папку можно оставить для отката.</p><button id="releases">Релизы на GitHub</button>
-          <p class="caption">MuseDPI Desktop 0.1.0-alpha.2 · ByeDPI 0.17.3</p>
+          <h3>Совместимость Flowseal</h3><p>Встроены проверенные UDP-приманки и снимок IP-набора. TCP-стратегии работают на ByeDPI: hostfakesplit, seqovl, fooling=ts и WinDivert не эмулируются. Драйверы и службы не устанавливаются.</p><p id="flowseal-source" class="caption"></p>
+          <p class="caption">MuseDPI Desktop 0.1.0-alpha.3 · ByeDPI 0.17.3</p>
         </section>
       </main>
       <footer><div id="activity" hidden><div><span id="activity-text" role="status"></span><progress id="activity-progress" aria-label="Прогресс проверки"></progress></div><button id="cancel">Остановить проверку</button></div><div class="savebar" id="savebar" hidden><span>Есть изменения</span><button id="discard">Отменить</button><button id="save" class="primary">Сохранить</button></div><div id="message" role="status" aria-live="polite"></div></footer>

@@ -47,7 +47,7 @@ guard let data = try? Data(contentsOf: fileURL), data.count <= 512 * 1024 else {
 }
 
 guard let catalog = try? JSONDecoder().decode(Catalog.self, from: data) else {
-    fail("catalog does not match schema version 1")
+    fail("catalog does not match schema version 2")
 }
 
 let signatureURL = URL(fileURLWithPath: CommandLine.arguments[2])

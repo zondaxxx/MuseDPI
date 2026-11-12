@@ -4,6 +4,7 @@ const { pathToFileURL } = require('node:url');
 const { Controller } = require('./controller.cjs');
 const { loadSettings, ipEntries } = require('./settings.cjs');
 const { open } = require('node:fs/promises');
+const { bundledIpSet } = require('./flowseal.cjs');
 
 if (!app.requestSingleInstanceLock()) app.quit();
 let window;
@@ -29,6 +30,7 @@ app.whenReady().then(async () => {
   ipcMain.handle('action', async (event, action, id) => {
     if (event.sender !== window.webContents || event.senderFrame?.url !== page) throw new Error('Недопустимый источник команды');
     if (action === 'state') return controller.snapshot();
+    if (action === 'flowseal-ipset') return ipEntries(bundledIpSet()).join('\n');
     if (action === 'cancel') { controller.cancel(); return controller.snapshot(); }
     if (action === 'releases') {
       await shell.openExternal('https://github.com/zondaxxx/MuseDPI/releases?q=desktop-v&expanded=true');
@@ -40,10 +42,10 @@ app.whenReady().then(async () => {
       const file = await open(selected.filePaths[0], 'r');
       try {
         const metadata = await file.stat();
-        if (!metadata.isFile() || metadata.size > 524288) throw new Error('Нужен текстовый файл размером до 512 КБ');
-        const buffer = Buffer.alloc(524289);
+        if (!metadata.isFile() || metadata.size > 2097152) throw new Error('Нужен текстовый файл размером до 2 МиБ');
+        const buffer = Buffer.alloc(2097153);
         const { bytesRead } = await file.read(buffer, 0, buffer.length, 0);
-        if (bytesRead > 524288) throw new Error('Файл больше 512 КБ');
+        if (bytesRead > 2097152) throw new Error('Файл больше 2 МиБ');
         return ipEntries(buffer.subarray(0, bytesRead).toString('utf8')).join('\n');
       } finally { await file.close(); }
     }

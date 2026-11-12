@@ -1,13 +1,14 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { Controller, commandArgs } = require('../controller.cjs');
+const { profiles } = require('../profiles.cjs');
 
 test('unknown profile cannot inject arbitrary engine arguments', () => {
   assert.throws(() => commandArgs('--ip 0.0.0.0'), /Неизвестная/);
 });
 
 test('built-in profiles scope TLS and HTTP separately and pass other traffic through', () => {
-  for (const id of ['gentle', 'multisplit', 'mid-sni', 'tls-record']) {
+  for (const { id } of profiles) {
     const args = commandArgs(id);
     assert.equal(args[0], '-Kt');
     assert.ok(args.includes('-Kh'));
@@ -76,7 +77,7 @@ test('native engine accepts all profiles and preserves its port', { skip: !proce
   const controller = new Controller(process.env.MUSE_TEST_ENGINE, { ephemeral: true });
   let port;
   try {
-    for (const id of ['gentle', 'multisplit', 'mid-sni', 'tls-record']) {
+    for (const { id } of profiles) {
       await controller.start(id);
       assert.equal(controller.state.phase, 'running');
       if (port) assert.equal(controller.state.port, port);

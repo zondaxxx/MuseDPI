@@ -7,6 +7,7 @@ const { mkdtemp, writeFile, rm } = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const { probe } = require('./probe.cjs');
+const { payloadBytes, payloadOptions, sourceInfo } = require('./flowseal.cjs');
 
 const delay = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
@@ -56,7 +57,7 @@ class Controller extends EventEmitter {
     this.settings = normalizeSettings(options.settings || defaults());
     this.settingsPath = options.settingsPath;
     this.runtimeDirectory = null;
-    this.state = { phase: 'idle', profile: this.settings.profile, port: null, results: [], message: '', testing: false, checking: false, progress: null };
+    this.state = { phase: 'idle', profile: this.settings.profile, port: null, results: [], selectionResults: [], message: '', testing: false, checking: false, progress: null };
   }
 
   update(values) {
@@ -65,7 +66,7 @@ class Controller extends EventEmitter {
   }
 
   snapshot() {
-    return { ...this.state, results: [...this.state.results], profiles, services: serviceCatalog, settings: structuredClone({ ...this.settings, profile: this.state.profile }) };
+    return { ...this.state, results: [...this.state.results], selectionResults: structuredClone(this.state.selectionResults), profiles, payloadOptions, sourceInfo, services: serviceCatalog, settings: structuredClone({ ...this.settings, profile: this.state.profile }) };
   }
 
   async exclusive(operation) {
@@ -79,7 +80,8 @@ class Controller extends EventEmitter {
   async start(id, signal) {
     if (this.closed) throw new Error('Приложение закрывается');
     signal?.throwIfAborted();
-    commandArgs(id, this.settings);
+    if (!profiles.some(profile => profile.id === id)) throw new Error('Неизвестная стратегия');
+    normalizeSettings(this.settings);
     await this.stop();
     this.update({ phase: 'starting', profile: id, results: [], message: '' });
     let port;
@@ -96,6 +98,10 @@ class Controller extends EventEmitter {
         if (!value) continue;
         files[name] = path.join(this.runtimeDirectory, `${name}.txt`);
         await writeFile(files[name], value, { mode: 0o600 });
+      }
+      if (this.settings.game.enabled && this.settings.game.udpPorts && this.settings.game.udpPayload !== 'standard') {
+        files.udpPayload = path.join(this.runtimeDirectory, 'udp-payload.bin');
+        await writeFile(files.udpPayload, payloadBytes(this.settings.game.udpPayload), { mode: 0o600 });
       }
       if (this.closed) throw new Error('Приложение закрывается');
       signal?.throwIfAborted();
@@ -220,7 +226,7 @@ class Controller extends EventEmitter {
       this.update({ profile: previous.profile });
       throw error;
     }
-    this.update({ profile: next.profile, results: [], message: 'Настройки сохранены' });
+    this.update({ profile: next.profile, results: [], selectionResults: [], message: 'Настройки сохранены' });
     if (wasRunning) await this.diagnose();
   }
 
@@ -238,7 +244,7 @@ class Controller extends EventEmitter {
     const candidate = this.createCandidate();
     let best = null;
     let switched = false;
-    this.update({ testing: true });
+    this.update({ testing: true, selectionResults: [] });
     try {
       for (const [index, profile] of profiles.entries()) {
         signal.throwIfAborted();
@@ -250,8 +256,12 @@ class Controller extends EventEmitter {
           const reachable = results.filter(result => result.reachable);
           const count = reachable.length;
           const latency = reachable.reduce((total, result) => total + result.milliseconds, 0);
+          this.update({ selectionResults: [...this.state.selectionResults, { id: profile.id, count, total: results.length, milliseconds: count ? Math.round(latency / count) : null, results }] });
           if (count && (!best || count > best.count || (count === best.count && latency < best.latency))) best = { id: profile.id, count, latency, services: reachable.map(result => result.id) };
-        } catch (error) { if (signal.aborted || this.closed) throw error; }
+        } catch (error) {
+          if (signal.aborted || this.closed) throw error;
+          this.update({ selectionResults: [...this.state.selectionResults, { id: profile.id, count: 0, total: 0, milliseconds: null, error: 'Не удалось проверить профиль', results: [] }] });
+        }
       }
       if (!best) throw new Error('Рабочий профиль не найден. Предыдущая настройка сохранена.');
       this.update({ progress: { current: profiles.length, total: profiles.length, name: 'Повторная проверка' } });
@@ -261,9 +271,11 @@ class Controller extends EventEmitter {
       if (!confirms(confirmation)) throw new Error('Профиль не прошёл повторную проверку. Предыдущая настройка сохранена.');
       await candidate.close();
       signal.throwIfAborted();
-      this.update({ progress: { current: profiles.length, total: profiles.length, name: 'Применяем профиль' } });
-      switched = true;
-      await this.start(best.id, signal);
+      this.update({ progress: { current: profiles.length, total: profiles.length, name: 'Проверяем основной порт' } });
+      if (!wasRunning || best.id !== previous) {
+        switched = true;
+        await this.start(best.id, signal);
+      }
       if (!confirms(await this.diagnose(signal))) throw new Error('Профиль не прошёл проверку на основном порту. Предыдущая настройка сохранена.');
       signal.throwIfAborted();
       if (this.settingsPath) await saveSettings(this.settingsPath, { ...this.settings, profile: best.id });

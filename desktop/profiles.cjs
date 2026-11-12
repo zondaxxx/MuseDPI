@@ -1,11 +1,6 @@
 const { defaults, normalizeSettings, targetDomains, ports, engineIps } = require('./settings.cjs');
 
-const profiles = [
-  { id: 'gentle', name: 'Мягкий SNI', detail: 'Одно разбиение, без TTL и OOB', tls: ['-s1+s'] },
-  { id: 'multisplit', name: 'SNI Multisplit', detail: 'Несколько TCP-фрагментов', tls: ['-s1', '-s1+s', '-s3+s', '-s6+s'] },
-  { id: 'mid-sni', name: 'Середина SNI', detail: 'Не зависит от длины имени сервиса', tls: ['-s1', '-s0+sm'] },
-  { id: 'tls-record', name: 'TLS Record', detail: 'Экспериментальный профиль TLS-записей', tls: ['-r0+sm', '-s1'] }
-];
+const profiles = require('./profile-data.cjs');
 
 function commandArgs(id, input = defaults(), files = {}) {
   const profile = profiles.find(item => item.id === id);
@@ -17,7 +12,11 @@ function commandArgs(id, input = defaults(), files = {}) {
   if (settings.excludedDomains) args.push('-Kt,h', '-H', list('excludedDomains', settings.excludedDomains), '-An');
   if (settings.game.enabled) {
     const scope = settings.ipMode === 'only' ? ['-j', list('includeIps', engineIps(settings.includeIps).join('\n'))] : [];
-    for (const port of ports(settings.game.udpPorts)) args.push('-Ku', `-V${port}`, ...scope, `-a${settings.game.udpFakes}`, `-t${settings.game.ttl}`, '-An');
+    const udpPorts = ports(settings.game.udpPorts);
+    const customPayload = udpPorts.length && settings.game.udpPayload !== 'standard';
+    if (customPayload && !files.udpPayload) throw new Error('Не подготовлен файл UDP-приманки');
+    const payload = customPayload ? ['-l', files.udpPayload] : [];
+    for (const port of udpPorts) args.push('-Ku', `-V${port}`, ...scope, ...payload, `-a${settings.game.udpFakes}`, `-t${settings.game.ttl}`, '-An');
     for (const port of ports(settings.game.tcpPorts)) args.push(`-V${port}`, ...scope, '-s1', '-An');
   }
   const targets = targetDomains(settings);

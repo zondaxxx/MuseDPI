@@ -82,6 +82,7 @@ textarea::placeholder, input::placeholder { color: #8d9aa3; }
 .field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .experimental { font-size: 11px; color: #ddbd91; margin-left: 6px; }
 .autopick { margin-top: 24px; }
+#selection-report { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
 details { margin-top: 20px; }
 summary { cursor: pointer; padding: 8px 0; font-size: 13px; color: var(--muted); }
 .help-steps { padding-left: 20px; margin: 0 0 28px; }

@@ -18,9 +18,10 @@
 обрабатывает его ядром [ByeDPI](https://github.com/hufrea/byedpi) прямо на телефоне.
 Внешний VPN-сервер не используется.
 
-Для **Windows x64** доступна [MuseDPI Desktop Alpha 2](https://github.com/zondaxxx/MuseDPI/releases/tag/desktop-v0.1.0-alpha.2):
+Для **Windows x64** доступна [MuseDPI Desktop Alpha 3](https://github.com/zondaxxx/MuseDPI/releases/tag/desktop-v0.1.0-alpha.3):
 локальный SOCKS5 с выбором сервисов, IP-наборами и игровыми TCP/UDP-фильтрами.
 Постоянный порт, отменяемая диагностика и автоподбор в отдельном прокси.
+Восемь TCP-профилей, отчёт автоподбора, ручной выбор UDP-приманок и IP-набора Flowseal 1.10.4.
 Desktop пока не создаёт системный туннель — трафик нужно направить в SOCKS5 из приложения.
 При обновлении с первой alpha один раз замените случайный порт в клиенте на **1080**
 или задайте свой. [Инструкция обновления](./desktop/README.md#обновление-с-alpha1).
@@ -187,11 +188,12 @@ scripts/                         сборка и валидация
 
 MuseDPI — производная работа от [mIwr/SwByeDPI](https://github.com/mIwr/SwByeDPI)
 с ядром [hufrea/byedpi](https://github.com/hufrea/byedpi). iOS-профили основаны
-на актуальных конфигурациях [Flowseal/zapret-discord-youtube](https://github.com/Flowseal/zapret-discord-youtube)
+на адаптациях приёмов [Flowseal/zapret-discord-youtube](https://github.com/Flowseal/zapret-discord-youtube)
 и документации [bol-van/zapret](https://github.com/bol-van/zapret): доступные на
 Apple TCP-приёмы переведены в split/TLS-record/OOB, а две UDP-приманки включены
 с исходной MIT-лицензией. Windows-компоненты `winws`, zapret и WinDivert в
 приложение не входят.
+Проверка Flowseal 1.10.4 и границы переноса описаны в [таблице совместимости](./docs/FLOWSEAL-COMPATIBILITY.md).
 
 Полный перечень встроенного кода, зависимостей, источников доменных списков,
 транзитивных проектов и лицензий находится в

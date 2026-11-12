@@ -23,5 +23,6 @@ for (const directory of packaged) {
   const { rename } = await import('node:fs/promises');
   await rename(path.join(bundled, 'bundle'), path.join(bundled, 'engine'));
   await copyFile(path.join(root, 'README.md'), path.join(directory, 'README-RU.md'));
+  await copyFile(path.join(root, '..', 'THIRD_PARTY_LICENSES', 'Flowseal-zapret.txt'), path.join(bundled, 'FLOWSEAL-LICENSE.txt'));
   console.log(directory);
 }

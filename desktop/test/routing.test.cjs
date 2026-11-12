@@ -5,6 +5,7 @@ const dgram = require('node:dgram');
 const { once } = require('node:events');
 const { Controller } = require('../controller.cjs');
 const { defaults } = require('../settings.cjs');
+const { payloadBytes, payloadOptions } = require('../flowseal.cjs');
 
 async function sendRequest(proxyPort, targetPort, host) {
   const socket = net.connect(proxyPort, '127.0.0.1');
@@ -61,7 +62,7 @@ test('native routing applies domains and IP sets without modifying excluded traf
   }
 });
 
-test('native game UDP rules affect only selected ports and respect IP exclusions', { skip: !process.env.MUSE_TEST_ENGINE, timeout: 30000 }, async () => {
+test('native game UDP rules and Flowseal bytes affect only selected ports and respect IP exclusions', { skip: !process.env.MUSE_TEST_ENGINE, timeout: 60000 }, async () => {
   const receiver = dgram.createSocket('udp4');
   receiver.bind(0, '127.0.0.1');
   await once(receiver, 'listening');
@@ -69,13 +70,15 @@ test('native game UDP rules affect only selected ports and respect IP exclusions
   const controller = new Controller(process.env.MUSE_TEST_ENGINE, { ephemeral: true });
   const payload = Buffer.from('musedpi-local-game-test');
   try {
-    for (const scenario of [{ match: true, exclude: false }, { match: false, exclude: false }, { match: true, exclude: true }]) {
+    const scenarios = [{ match: true, exclude: false }, { match: false, exclude: false }, { match: true, exclude: true }, ...payloadOptions.slice(1).map(item => ({ match: true, exclude: false, payload: item.id })), { match: true, exclude: true, payload: 'flowseal-game' }, { match: false, exclude: false, payload: 'flowseal-game' }];
+    for (const scenario of scenarios) {
       await controller.stop();
       const settings = defaults();
       settings.serviceIds = [];
       settings.excludedDomains = 'unrelated.test';
       settings.excludeIps = scenario.exclude ? '127.0.0.1' : '';
-      settings.game = { enabled: true, tcpPorts: '', udpPorts: String(scenario.match ? port : port === 65535 ? 65534 : port + 1), udpFakes: 3, ttl: 8 };
+      const fakeCount = scenario.payload === 'flowseal-game' ? 12 : 3;
+      settings.game = { enabled: true, tcpPorts: '', udpPorts: String(scenario.match ? port : port === 65535 ? 65534 : port + 1), udpPayload: scenario.payload || 'standard', udpFakes: fakeCount, ttl: 8 };
       await controller.configure(settings);
       await controller.start('gentle');
       const control = net.connect(controller.state.port, '127.0.0.1');
@@ -94,18 +97,20 @@ test('native game UDP rules affect only selected ports and respect IP exclusions
         assert.equal(response[1], 0);
         const relayPort = response.readUInt16BE(response.length - 2);
         let fakes = 0;
+        const fakePackets = [];
         const received = new Promise((resolve, reject) => {
           timer = setTimeout(() => reject(new Error('UDP payload not received')), 4000);
           listener = message => {
             if (message.equals(payload)) resolve();
-            else fakes++;
+            else { fakes++; fakePackets.push(message); }
           };
           receiver.on('message', listener);
         });
         const header = Buffer.from([0, 0, 0, 1, 127, 0, 0, 1, port >> 8, port & 255]);
         sender.send(Buffer.concat([header, payload]), relayPort, '127.0.0.1');
         await received;
-        assert.equal(fakes, scenario.match && !scenario.exclude ? 3 : 0, JSON.stringify(scenario));
+        assert.equal(fakes, scenario.match && !scenario.exclude ? fakeCount : 0, JSON.stringify(scenario));
+        if (scenario.payload) for (const fake of fakePackets) assert.deepEqual(fake, payloadBytes(scenario.payload));
       } finally {
         clearTimeout(timer);
         if (listener) receiver.off('message', listener);

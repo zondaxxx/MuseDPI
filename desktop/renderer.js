@@ -46,6 +46,13 @@ function optionRow(item, type, name) {
 function populate() {
   byId('service-options').replaceChildren(...state.services.map(service => optionRow(service, 'checkbox', 'service')));
   byId('profile-options').replaceChildren(...state.profiles.map(profile => optionRow(profile, 'radio', 'profile')));
+  byId('udp-payload').replaceChildren(...state.payloadOptions.map(item => {
+    const option = document.createElement('option');
+    option.value = item.id;
+    option.textContent = item.name;
+    return option;
+  }));
+  byId('flowseal-source').textContent = `Flowseal ${state.sourceInfo.release} · проверено ${state.sourceInfo.checkedAt} · ${state.sourceInfo.revision.slice(0, 7)}`;
 }
 
 function fillForm() {
@@ -62,6 +69,7 @@ function fillForm() {
   byId('tcp-ports').value = draft.game.tcpPorts;
   byId('udp-ports').value = draft.game.udpPorts;
   byId('udp-fakes').value = draft.game.udpFakes;
+  byId('udp-payload').value = draft.game.udpPayload;
   byId('game-ttl').value = draft.game.ttl;
   dirty = false;
 }
@@ -77,7 +85,7 @@ function readForm() {
     ipMode: byId('ip-mode').value,
     includeIps: byId('include-ips').value,
     excludeIps: byId('exclude-ips').value,
-    game: { enabled: byId('game-enabled').checked, tcpPorts: byId('tcp-ports').value, udpPorts: byId('udp-ports').value, udpFakes: Number(byId('udp-fakes').value), ttl: Number(byId('game-ttl').value) }
+    game: { enabled: byId('game-enabled').checked, tcpPorts: byId('tcp-ports').value, udpPorts: byId('udp-ports').value, udpPayload: byId('udp-payload').value, udpFakes: Number(byId('udp-fakes').value), ttl: Number(byId('game-ttl').value) }
   };
   dirty = JSON.stringify(draft) !== JSON.stringify(state.settings);
   notice = '';
@@ -121,7 +129,7 @@ function render(next) {
   byId('save').disabled = busy;
   byId('discard').disabled = busy;
   document.querySelectorAll('.settings-fields').forEach(fieldset => { fieldset.disabled = busy; });
-  for (const id of ['tcp-ports', 'udp-ports', 'udp-fakes', 'game-ttl']) byId(id).disabled = busy || !draft.game.enabled;
+  for (const id of ['tcp-ports', 'udp-ports', 'udp-fakes', 'udp-payload', 'game-ttl']) byId(id).disabled = busy || !draft.game.enabled;
   byId('ip-mode-help').textContent = draft.ipMode === 'only' ? 'Обход только для IP из списка. Доменные правила сервисов не применяются.' : draft.ipMode === 'extend' ? 'Обход для выбранных доменов и, отдельно, для IP из списка.' : 'Включающий IP-список не используется. Исключения IP остаются активными.';
   const count = draft.includeIps.split(/[\s,;]+/).filter(Boolean).length;
   byId('include-count').textContent = count ? `Записей до проверки: ${count}` : 'Список пуст';
@@ -146,6 +154,19 @@ function render(next) {
     rows.push(empty);
   }
   byId('results').replaceChildren(...rows);
+  byId('selection-report').hidden = !state.selectionResults.length;
+  byId('selection-results').replaceChildren(...state.selectionResults.map(result => {
+    const row = document.createElement('div');
+    row.className = 'service';
+    const label = document.createElement('strong');
+    label.textContent = state.profiles.find(profile => profile.id === result.id)?.name || result.id;
+    const value = document.createElement('span');
+    value.textContent = result.error || `${result.count}/${result.total} доступны${result.milliseconds === null ? '' : ` · в среднем ${result.milliseconds} мс`}`;
+    value.className = result.count ? 'ok' : 'failed';
+    value.title = result.results.map(item => `${item.name || item.id}: ${item.reachable ? `${item.milliseconds} мс` : item.error || 'недоступен'}`).join('\n');
+    row.append(label, value);
+    return row;
+  }));
   const checkedAt = Math.max(0, ...state.results.map(result => result.checkedAt || 0));
   byId('checked').textContent = checkedAt ? `HTTP-проверка: ${new Date(checkedAt).toLocaleTimeString()}. Игры и звонки не проверяются.` : 'HTTP-проверка доступна для Discord и YouTube.';
 }
@@ -192,12 +213,13 @@ document.querySelectorAll('[data-import]').forEach(button => button.addEventList
   pending = true;
   render(state);
   try {
-    const imported = await window.muse.action('import-ipset');
+    const bundled = button.dataset.source === 'flowseal';
+    const imported = await window.muse.action(bundled ? 'flowseal-ipset' : 'import-ipset');
     if (imported !== null) {
       const input = byId(button.dataset.import);
-      input.value = [input.value.trim(), imported].filter(Boolean).join('\n');
+      input.value = [...new Set([input.value.trim(), imported].filter(Boolean).join('\n').split(/\r?\n/))].join('\n');
       readForm();
-      notice = 'Файл добавлен в список. Сохрани изменения.';
+      notice = bundled ? 'IP-набор Flowseal добавлен в черновик. Проверь список и режим, затем сохрани.' : 'Файл добавлен в список. Сохрани изменения.';
     }
   } catch (error) { actionError = errorMessage(error); }
   finally { pending = false; render(state); }

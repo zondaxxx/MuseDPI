@@ -31,3 +31,17 @@ payloads as hexadecimal strings:
   SHA-256 f4589c57749f956bb30538197a521d7005f8b0a8723b4707e72405e51ddac50a
 - bin/ACTIVE_DISCORD_UDP.bin
   SHA-256 2fe18b3bd20807d36704d0b072092ee49ae84edca907a4420ab9a0f0f28fddcf
+
+Desktop data snapshot checked 2026-11-12, release 1.10.4 plus IP-set update:
+https://github.com/Flowseal/zapret-discord-youtube/tree/2401b7a13837139b0265632464ba563dddbf80d8
+The Google QUIC and Discord payloads above are also included unmodified in desktop.
+Additional unmodified payloads:
+- bin/ACTIVE_GAME_UDP.bin (1250 bytes)
+  SHA-256 e065870cb0d13152e6132807bbf42218a9e7cd8d96f5602b61674cc540f3a56e
+- bin/quic_initial_steam_chat_com.bin (1357 bytes)
+  SHA-256 1da1407166f5d2ade80f1d3c86d828178e13f08050c40fda2b0a4d276318642a
+- lists/ipset-all.txt.backup (577240 bytes, 33336 entries, stored losslessly as gzip)
+  SHA-256 63823a2023139b764f93338ffba5836ad92c8c4f5b114205912d710d09a592ab
+
+No winws or WinDivert binaries are included. MuseDPI's TCP strategies are ByeDPI
+adaptations, not equivalent implementations of the current Flowseal BAT files.

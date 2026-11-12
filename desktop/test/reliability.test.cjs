@@ -6,6 +6,7 @@ const { mkdtemp, rm } = require('node:fs/promises');
 const path = require('node:path');
 const os = require('node:os');
 const { Controller, handshake } = require('../controller.cjs');
+const { profiles } = require('../profiles.cjs');
 const { defaults, normalizeSettings, saveSettings, loadSettings } = require('../settings.cjs');
 
 const reachable = id => ({ id, reachable: true, milliseconds: 20, checkedAt: Date.now() });
@@ -38,7 +39,7 @@ test('a failed search never stops an already running proxy', async () => {
 test('verification must confirm the same services, not just their count', async () => {
   const controller = new Controller('/missing');
   let checks = 0;
-  controller.createCandidate = () => ({ start: async () => {}, diagnose: async () => [reachable(++checks <= 4 ? 'discord' : 'youtube')], close: async () => {} });
+  controller.createCandidate = () => ({ start: async () => {}, diagnose: async () => [reachable(++checks <= profiles.length ? 'discord' : 'youtube')], close: async () => {} });
   controller.start = async () => assert.fail('unconfirmed winner must not be applied');
   await assert.rejects(controller.selectBest(), /повторную проверку/);
   assert.equal(controller.state.phase, 'idle');
